@@ -1,0 +1,10 @@
+[run]
+branch = True
+data_file = .coverage
+source=forum_email_notifier
+omit =
+    test_settings.py
+    */migrations/*
+    *admin.py
+    */static/*
+    */templates/*
