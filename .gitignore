@@ -53,8 +53,8 @@ output/*/index.html
 # Sphinx
 docs/_build
 docs/modules.rst
-docs/forum_email_notifier.rst
-docs/forum_email_notifier.*.rst
+docs/platform_plugin_forum_email_notifier.rst
+docs/platform_plugin_forum_email_notifier.*.rst
 
 # Private requirements
 requirements/private.in

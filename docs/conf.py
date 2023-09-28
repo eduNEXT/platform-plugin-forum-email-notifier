@@ -39,7 +39,7 @@ def get_version(*file_paths):
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(REPO_ROOT)
 
-VERSION = get_version('../forum_email_notifier', '__init__.py')
+VERSION = get_version('../platform_plugin_forum_email_notifier', '__init__.py')
 # Configure Django for autodoc usage
 os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
 django_setup()
@@ -94,7 +94,7 @@ top_level_doc = 'index'
 project = 'platform_plugin_forum_email_notifier'
 copyright = f'{datetime.now().year}, Axim Collaborative, Inc.'  # pylint: disable=redefined-builtin
 author = 'Axim Collaborative, Inc.'
-project_title = 'platform_plugin_forum_email_notifier'
+project_title = 'Forum Email Notifier'
 documentation_title = f"{project_title}"
 
 # Set display_github to False if you don't want "edit on Github" button
@@ -537,8 +537,8 @@ def on_init(app):  # pylint: disable=unused-argument
         # If we are, assemble the path manually
         bin_path = os.path.abspath(os.path.join(sys.prefix, 'bin'))
         apidoc_path = os.path.join(bin_path, apidoc_path)
-    check_call([apidoc_path, '-o', docs_path, os.path.join(root_path, 'forum_email_notifier'),
-                os.path.join(root_path, 'forum_email_notifier/migrations')])
+    check_call([apidoc_path, '-o', docs_path, os.path.join(root_path, 'platform_plugin_forum_email_notifier'),
+                os.path.join(root_path, 'platform_plugin_forum_email_notifier/migrations')])
 
 
 def setup(app):

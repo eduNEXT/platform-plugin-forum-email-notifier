@@ -1,7 +1,7 @@
 [run]
 branch = True
 data_file = .coverage
-source=forum_email_notifier
+source=platform_plugin_forum_email_notifier
 omit =
     test_settings.py
     */migrations/*
