@@ -1,3 +1,4 @@
+"""API Views for the platform_plugin_forum_email_notifier plugin."""
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -9,7 +10,7 @@ class ForumEmailNotificationPreferenceAPIView(APIView):
     API endpoint that allows to update the forum email notification preference.
     """
 
-    def get(self, request, course_id, format=None):
+    def get(self, request, course_id):
         """
         Get the forum email notification preference for the user.
         """
@@ -22,7 +23,7 @@ class ForumEmailNotificationPreferenceAPIView(APIView):
         except ForumNotificationPreference.DoesNotExist:
             return Response({"preference": PreferenceOptions.NONE})
 
-    def put(self, request, course_id, format=None):
+    def put(self, request, course_id):
         """
         Update the forum email notification preference for the user.
         """

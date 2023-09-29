@@ -48,24 +48,22 @@ def root(*x):
 # See: https://docs.djangoproject.com/en/1.8/ref/settings/#templates
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'APP_DIRS': True,
-        'DIRS': (
-            root('templates'),
-        ),
-        'OPTIONS': {
-            'context_processors': (
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.contrib.messages.context_processors.messages',
-                'credentials.apps.core.context_processors.core',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "APP_DIRS": True,
+        "DIRS": (root("templates"),),
+        "OPTIONS": {
+            "context_processors": (
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
+                "credentials.apps.core.context_processors.core",
             ),
-            'debug': True,  # Django will only display debug pages if the global DEBUG setting is set to True.
-        }
+            "debug": True,  # Django will only display debug pages if the global DEBUG setting is set to True.
+        },
     },
 ]
 
