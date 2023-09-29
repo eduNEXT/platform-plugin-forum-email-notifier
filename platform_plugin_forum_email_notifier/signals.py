@@ -31,7 +31,7 @@ def forum_comment_created_handler(signal, sender, thread, metadata, **kwargs):
 
 def notify_users(thread, type):
     """
-    Get the subscribers for a thread.
+    Get the subscribers for a thread and notify them.
     """
     if type == "thread":
         subscribers = get_subscribers(thread.id)
