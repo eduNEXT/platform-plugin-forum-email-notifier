@@ -75,6 +75,7 @@ test: clean ## run tests in the current virtualenv
 
 format: ## Format code automatically
 	black $(BLACK_OPTS)
+	isort $(SOURCES)
 
 diff_cover: test ## find diff lines that need test coverage
 	diff-cover coverage.xml
