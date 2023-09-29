@@ -32,14 +32,14 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.sessions',
-    'forum_email_notifier',
+    'platform_plugin_forum_email_notifier',
 )
 
 LOCALE_PATHS = [
-    root('forum_email_notifier', 'conf', 'locale'),
+    root('platform_plugin_forum_email_notifier', 'conf', 'locale'),
 ]
 
-ROOT_URLCONF = 'forum_email_notifier.urls'
+ROOT_URLCONF = 'platform_plugin_forum_email_notifier.urls'
 
 SECRET_KEY = 'insecure-secret-key'
 

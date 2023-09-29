@@ -21,4 +21,4 @@ class ForumNotificationPreference(TimeStampedModel):
         Get a string representation of this model instance.
         """
         # TODO: return a string appropriate for the data fields
-        return '<ForumNotificationPreference, ID: {}>'.format(self.id)
+        return "<ForumNotificationPreference, ID: {}>".format(self.id)

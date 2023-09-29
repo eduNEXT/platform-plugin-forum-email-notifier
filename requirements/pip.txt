@@ -5,10 +5,10 @@
 #    make upgrade
 #
 wheel==0.41.2
-    # via -r python-template/placeholder_repo_name_0/requirements/pip.in
+    # via -r requirements/pip.in
 
 # The following packages are considered to be unsafe in a requirements file:
 pip==23.2.1
-    # via -r python-template/placeholder_repo_name_0/requirements/pip.in
-setuptools==68.2.0
-    # via -r python-template/placeholder_repo_name_0/requirements/pip.in
+    # via -r requirements/pip.in
+setuptools==68.2.2
+    # via -r requirements/pip.in

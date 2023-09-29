@@ -7,6 +7,10 @@
 # For opening files in a browser. Use like: $(BROWSER)relative/path/to/file.html
 BROWSER := python -m webbrowser file://$(CURDIR)/
 
+PACKAGE=platform_plugin_forum_email_notifier
+SOURCES=./setup.py ./$(PACKAGE)
+BLACK_OPTS = --exclude templates ${SOURCES}
+
 help: ## display this help message
 	@echo "Please use \`make <target>' where <target> is one of"
 	@awk -F ':.*?## ' '/^[a-zA-Z]/ && NF==2 {printf "\033[36m  %-25s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
@@ -69,6 +73,9 @@ requirements: clean_tox piptools ## install development environment requirements
 test: clean ## run tests in the current virtualenv
 	pytest
 
+format: ## Format code automatically
+	black $(BLACK_OPTS)
+
 diff_cover: test ## find diff lines that need test coverage
 	diff-cover coverage.xml
 
@@ -85,14 +92,14 @@ selfcheck: ## check that the Makefile is well-formed
 
 extract_translations: ## extract strings to be translated, outputting .mo files
 	rm -rf docs/_build
-	cd forum_email_notifier && ../manage.py makemessages -l en -v1 -d django
-	cd forum_email_notifier && ../manage.py makemessages -l en -v1 -d djangojs
+	cd platform_plugin_forum_email_notifier && ../manage.py makemessages -l en -v1 -d django
+	cd platform_plugin_forum_email_notifier && ../manage.py makemessages -l en -v1 -d djangojs
 
 compile_translations: ## compile translation files, outputting .po files for each supported language
-	cd forum_email_notifier && ../manage.py compilemessages
+	cd platform_plugin_forum_email_notifier && ../manage.py compilemessages
 
 detect_changed_source_translations:
-	cd forum_email_notifier && i18n_tool changed
+	cd platform_plugin_forum_email_notifier && i18n_tool changed
 
 pull_translations: ## pull translations from Transifex
 	tx pull -af -t --mode reviewed
@@ -101,7 +108,7 @@ push_translations: ## push source translation files (.po) from Transifex
 	tx push -s
 
 dummy_translations: ## generate dummy translation (.po) files
-	cd forum_email_notifier && i18n_tool dummy
+	cd platform_plugin_forum_email_notifier && i18n_tool dummy
 
 build_dummy_translations: extract_translations dummy_translations compile_translations ## generate and compile dummy translation files
 
