@@ -4,6 +4,10 @@
 #
 #    make upgrade
 #
+amqp==5.1.1
+    # via
+    #   -r requirements/test.txt
+    #   kombu
 asgiref==3.7.2
     # via
     #   -r requirements/test.txt
@@ -12,37 +16,111 @@ astroid==2.15.8
     # via
     #   pylint
     #   pylint-celery
+attrs==23.1.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-ace
+    #   openedx-events
+backports-zoneinfo[tzdata]==0.2.1
+    # via
+    #   -r requirements/test.txt
+    #   celery
+    #   kombu
+billiard==4.1.0
+    # via
+    #   -r requirements/test.txt
+    #   celery
+celery==5.3.4
+    # via -r requirements/test.txt
+certifi==2023.7.22
+    # via
+    #   -r requirements/test.txt
+    #   requests
+cffi==1.16.0
+    # via
+    #   -r requirements/test.txt
+    #   pynacl
+charset-normalizer==3.3.0
+    # via
+    #   -r requirements/test.txt
+    #   requests
 click==8.1.7
     # via
     #   -r requirements/test.txt
+    #   celery
+    #   click-didyoumean
     #   click-log
+    #   click-plugins
+    #   click-repl
     #   code-annotations
+    #   edx-django-utils
     #   edx-lint
+click-didyoumean==0.3.0
+    # via
+    #   -r requirements/test.txt
+    #   celery
 click-log==0.4.0
     # via edx-lint
+click-plugins==1.1.1
+    # via
+    #   -r requirements/test.txt
+    #   celery
+click-repl==0.3.0
+    # via
+    #   -r requirements/test.txt
+    #   celery
 code-annotations==1.5.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
-coverage[toml]==7.3.1
+coverage[toml]==7.3.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
 dill==0.3.7
     # via pylint
-django==3.2.21
+django==3.2.22
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/test.txt
+    #   django-crum
     #   django-model-utils
+    #   django-waffle
+    #   edx-ace
+    #   edx-django-utils
+    #   openedx-events
+django-crum==0.7.9
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
 django-model-utils==4.3.1
+    # via -r requirements/test.txt
+django-waffle==4.0.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
+edx-ace==1.7.0
+    # via -r requirements/test.txt
+edx-django-utils==5.7.0
     # via -r requirements/test.txt
 edx-lint==5.3.4
     # via -r requirements/quality.in
+edx-opaque-keys[django]==2.5.1
+    # via
+    #   -r requirements/test.txt
+    #   openedx-events
 exceptiongroup==1.1.3
     # via
     #   -r requirements/test.txt
     #   pytest
+fastavro==1.8.4
+    # via
+    #   -r requirements/test.txt
+    #   openedx-events
+idna==3.4
+    # via
+    #   -r requirements/test.txt
+    #   requests
 iniconfig==2.0.0
     # via
     #   -r requirements/test.txt
@@ -55,6 +133,10 @@ jinja2==3.1.2
     # via
     #   -r requirements/test.txt
     #   code-annotations
+kombu==5.3.2
+    # via
+    #   -r requirements/test.txt
+    #   celery
 lazy-object-proxy==1.9.0
     # via astroid
 markupsafe==2.1.3
@@ -63,7 +145,13 @@ markupsafe==2.1.3
     #   jinja2
 mccabe==0.7.0
     # via pylint
-packaging==23.1
+newrelic==9.1.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
+openedx-events==8.9.0
+    # via -r requirements/test.txt
+packaging==23.2
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -71,17 +159,29 @@ pbr==5.11.1
     # via
     #   -r requirements/test.txt
     #   stevedore
-platformdirs==3.10.0
+platformdirs==3.11.0
     # via pylint
 pluggy==1.3.0
     # via
     #   -r requirements/test.txt
     #   pytest
+prompt-toolkit==3.0.39
+    # via
+    #   -r requirements/test.txt
+    #   click-repl
+psutil==5.9.5
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
 pycodestyle==2.11.0
     # via -r requirements/quality.in
+pycparser==2.21
+    # via
+    #   -r requirements/test.txt
+    #   cffi
 pydocstyle==6.3.0
     # via -r requirements/quality.in
-pylint==2.17.6
+pylint==2.17.7
     # via
     #   edx-lint
     #   pylint-celery
@@ -95,6 +195,14 @@ pylint-plugin-utils==0.8.2
     # via
     #   pylint-celery
     #   pylint-django
+pymongo==3.13.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-opaque-keys
+pynacl==1.5.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
 pytest==7.4.2
     # via
     #   -r requirements/test.txt
@@ -104,6 +212,11 @@ pytest-cov==4.1.0
     # via -r requirements/test.txt
 pytest-django==4.5.2
     # via -r requirements/test.txt
+python-dateutil==2.8.2
+    # via
+    #   -r requirements/test.txt
+    #   celery
+    #   edx-ace
 python-slugify==8.0.1
     # via
     #   -r requirements/test.txt
@@ -116,8 +229,24 @@ pyyaml==6.0.1
     # via
     #   -r requirements/test.txt
     #   code-annotations
+requests==2.31.0
+    # via
+    #   -r requirements/test.txt
+    #   sailthru-client
+sailthru-client==2.2.3
+    # via
+    #   -r requirements/test.txt
+    #   edx-ace
+simplejson==3.19.1
+    # via
+    #   -r requirements/test.txt
+    #   sailthru-client
 six==1.16.0
-    # via edx-lint
+    # via
+    #   -r requirements/test.txt
+    #   edx-ace
+    #   edx-lint
+    #   python-dateutil
 snowballstemmer==2.2.0
     # via pydocstyle
 sqlparse==0.4.4
@@ -128,6 +257,9 @@ stevedore==5.1.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
+    #   edx-ace
+    #   edx-django-utils
+    #   edx-opaque-keys
 text-unidecode==1.3
     # via
     #   -r requirements/test.txt
@@ -145,6 +277,27 @@ typing-extensions==4.8.0
     #   -r requirements/test.txt
     #   asgiref
     #   astroid
+    #   edx-opaque-keys
+    #   kombu
     #   pylint
+tzdata==2023.3
+    # via
+    #   -r requirements/test.txt
+    #   backports-zoneinfo
+    #   celery
+urllib3==2.0.6
+    # via
+    #   -r requirements/test.txt
+    #   requests
+vine==5.0.0
+    # via
+    #   -r requirements/test.txt
+    #   amqp
+    #   celery
+    #   kombu
+wcwidth==0.2.8
+    # via
+    #   -r requirements/test.txt
+    #   prompt-toolkit
 wrapt==1.15.0
     # via astroid
