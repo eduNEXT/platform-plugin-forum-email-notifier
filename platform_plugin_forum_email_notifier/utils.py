@@ -2,7 +2,11 @@
 
 from collections import namedtuple
 
-from openedx.core.djangoapps.django_comment_common.comment_client import settings, utils
+try:
+    from openedx.core.djangoapps.django_comment_common.comment_client import settings, utils
+except ImportError:
+    settings = object
+    utils = object
 
 Subscriber = namedtuple("Subscriber", ["id"])
 
@@ -29,4 +33,5 @@ def get_subscribers(thread_id):
 
 
 def _url_for_thread_subscriptions(thread_id):
+    """Return the url for the thread subscriptions endpoint in the forum service."""
     return f"{settings.PREFIX}/threads/{thread_id}/subscriptions"

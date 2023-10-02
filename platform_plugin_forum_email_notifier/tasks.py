@@ -5,9 +5,16 @@ from celery import shared_task
 from django.contrib.auth import get_user_model
 from edx_ace.recipient import Recipient
 from edx_django_utils.monitoring import set_code_owner_attribute
-from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
-from openedx.core.djangoapps.lang_pref import LANGUAGE_KEY
-from openedx.core.djangoapps.user_api.preferences.api import get_user_preference
+
+try:
+    from openedx.core.djangoapps.content.course_overviews.api import get_course_overview_or_none
+    from openedx.core.djangoapps.lang_pref import LANGUAGE_KEY
+    from openedx.core.djangoapps.user_api.preferences.api import get_user_preference
+except ImportError:
+    get_course_overview_or_none = object
+    LANGUAGE_KEY = object
+    get_user_preference = object
+
 
 from platform_plugin_forum_email_notifier.email import send_forum_email_notification
 
@@ -38,7 +45,7 @@ def send_email_notification(
         log.warning(f"User {subscriber} does not exist")
         return
 
-    course = CourseOverview.get_from_id(course_id)
+    course = get_course_overview_or_none(course_id)
 
     language_preference = get_user_preference(user, LANGUAGE_KEY)
 

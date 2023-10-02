@@ -1,8 +1,12 @@
-"""Email module for platform_plugin_forum_email_notifier"""
+"""Email module to send ACE email messages to forum subscribers"""
 from django.contrib.sites.models import Site
 from edx_ace import ace
 from edx_ace.message import MessageType
-from openedx.core.lib.celery.task_utils import emulate_http_request
+
+try:
+    from openedx.core.lib.celery.task_utils import emulate_http_request
+except ImportError:
+    emulate_http_request = object
 
 
 class ForumEmailNotification(MessageType):
@@ -11,11 +15,9 @@ class ForumEmailNotification(MessageType):
     """
 
 
-forum_email_message_type = ForumEmailNotification()
-
-
 def send_forum_email_notification(recipient, language, user_context):
     """Send email notification for forum events to suscribers."""
+    forum_email_message_type = ForumEmailNotification()
     msg = forum_email_message_type.personalize(
         recipient=recipient,
         language=language,
