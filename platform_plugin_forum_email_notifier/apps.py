@@ -3,6 +3,7 @@ forum_email_notifier Django application initialization.
 """
 
 from django.apps import AppConfig
+from openedx.core.constants import COURSE_ID_PATTERN
 
 
 class PlatformPluginForumEmailNotifierConfig(AppConfig):
@@ -13,6 +14,13 @@ class PlatformPluginForumEmailNotifierConfig(AppConfig):
     name = "platform_plugin_forum_email_notifier"
 
     plugin_app = {
+        "url_config": {
+            "lms.djangoapp": {
+                "namespace": "platform_plugin_forum_email_notifier",
+                "regex": rf"courses/{COURSE_ID_PATTERN}/instructor/api/",
+                "relative_path": "urls",
+            }
+        },
         "settings_config": {
             "lms.djangoapp": {
                 "common": {"relative_path": "settings.common"},
@@ -31,7 +39,9 @@ class PlatformPluginForumEmailNotifierConfig(AppConfig):
         super().ready()
 
         from platform_plugin_forum_email_notifier import (  # pylint: disable=unused-import, import-outside-toplevel
+            admin,
             email,
             handlers,
             tasks,
         )
+        from platform_plugin_forum_email_notifier.extensions import filters

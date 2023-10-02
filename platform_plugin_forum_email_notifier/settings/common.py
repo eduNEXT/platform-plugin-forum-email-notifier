@@ -16,7 +16,9 @@ SECRET_KEY = "secret-key"
 
 # Application definition
 
-INSTALLED_APPS = []
+INSTALLED_APPS = [
+    "platform_plugin_forum_email_notifier",
+]
 
 
 # Internationalization
@@ -35,3 +37,4 @@ def plugin_settings(settings):
     More info: https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/plugins/README.rst
     """
     settings.MAKO_TEMPLATE_DIRS_BASE.append(ROOT_DIRECTORY / "templates")
+    settings.FORUM_NOTIFIER_URL = "api/forum_email_notification_preference"
