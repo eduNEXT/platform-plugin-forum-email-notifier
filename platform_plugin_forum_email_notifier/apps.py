@@ -30,4 +30,4 @@ class PlatformPluginForumEmailNotifierConfig(AppConfig):
     def ready(self):
         super().ready()
 
-        from platform_plugin_forum_email_notifier import email, signals, tasks
+        from platform_plugin_forum_email_notifier import email, tasks, handlers  # pylint: disable=unused-import, import-outside-toplevel

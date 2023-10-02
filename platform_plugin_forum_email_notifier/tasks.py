@@ -1,3 +1,4 @@
+"""Tasks for the platform_plugin_forum_email_notifier plugin."""
 import logging
 
 from celery import shared_task

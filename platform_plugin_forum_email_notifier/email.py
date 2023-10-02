@@ -15,6 +15,7 @@ forum_email_message_type = ForumEmailNotification()
 
 
 def send_forum_email_notification(recipient, language, user_context):
+    """Send email notification for forum events to suscribers."""
     msg = forum_email_message_type.personalize(
         recipient=recipient,
         language=language,
