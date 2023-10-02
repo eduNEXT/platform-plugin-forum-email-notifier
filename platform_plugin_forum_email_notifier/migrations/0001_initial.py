@@ -9,7 +9,6 @@ import opaque_keys.edx.django.models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -18,18 +17,64 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ForumNotificationPreference',
+            name="ForumNotificationPreference",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
-                ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
-                ('course_id', opaque_keys.edx.django.models.CourseKeyField(db_index=True, max_length=255)),
-                ('preference', models.IntegerField(choices=[(1, 'None'), (2, 'All posts'), (3, "Only posts I'm following"), (4, 'All posts. (Daily digest)'), (5, 'All posts. (Weekly digest)')], default=1)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='forum_notification_preferences', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created",
+                    model_utils.fields.AutoCreatedField(
+                        default=django.utils.timezone.now,
+                        editable=False,
+                        verbose_name="created",
+                    ),
+                ),
+                (
+                    "modified",
+                    model_utils.fields.AutoLastModifiedField(
+                        default=django.utils.timezone.now,
+                        editable=False,
+                        verbose_name="modified",
+                    ),
+                ),
+                (
+                    "course_id",
+                    opaque_keys.edx.django.models.CourseKeyField(
+                        db_index=True, max_length=255
+                    ),
+                ),
+                (
+                    "preference",
+                    models.IntegerField(
+                        choices=[
+                            (1, "None"),
+                            (2, "All posts"),
+                            (3, "Only posts I'm following"),
+                            (4, "All posts. (Daily digest)"),
+                            (5, "All posts. (Weekly digest)"),
+                        ],
+                        default=1,
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="forum_notification_preferences",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created'],
-                'unique_together': {('user', 'course_id')},
+                "ordering": ["-created"],
+                "unique_together": {("user", "course_id")},
             },
         ),
     ]
