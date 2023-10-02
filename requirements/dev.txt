@@ -112,6 +112,7 @@ django==3.2.21
     #   edx-django-utils
     #   edx-i18n-tools
     #   openedx-events
+    #   openedx-filters
 django-crum==0.7.9
     # via
     #   -r requirements/quality.txt
@@ -190,7 +191,9 @@ newrelic==9.1.0
     # via
     #   -r requirements/quality.txt
     #   edx-django-utils
-openedx-events==8.6.0
+openedx-events==8.7.0
+    # via -r requirements/quality.txt
+openedx-filters==1.6.0
     # via -r requirements/quality.txt
 packaging==23.2
     # via
@@ -405,6 +408,8 @@ wcwidth==0.2.8
     # via
     #   -r requirements/quality.txt
     #   prompt-toolkit
+web-fragments==2.1.0
+    # via -r requirements/quality.txt
 wheel==0.41.2
     # via
     #   -r requirements/pip-tools.txt

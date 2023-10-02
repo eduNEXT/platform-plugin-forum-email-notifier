@@ -49,6 +49,7 @@ django==3.2.21
     #   edx-ace
     #   edx-django-utils
     #   openedx-events
+    #   openedx-filters
 django-crum==0.7.9
     # via edx-django-utils
 django-model-utils==4.3.1
@@ -69,7 +70,9 @@ kombu==5.3.2
     # via celery
 newrelic==9.1.0
     # via edx-django-utils
-openedx-events==8.6.0
+openedx-events==8.7.0
+    # via -r requirements/base.in
+openedx-filters==1.6.0
     # via -r requirements/base.in
 pbr==5.11.1
     # via stevedore
@@ -124,3 +127,5 @@ vine==5.0.0
     #   kombu
 wcwidth==0.2.8
     # via prompt-toolkit
+web-fragments==2.1.0
+    # via -r requirements/base.in

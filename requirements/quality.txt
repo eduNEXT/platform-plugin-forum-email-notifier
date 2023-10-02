@@ -89,6 +89,7 @@ django==3.2.21
     #   edx-ace
     #   edx-django-utils
     #   openedx-events
+    #   openedx-filters
 django-crum==0.7.9
     # via
     #   -r requirements/test.txt
@@ -149,7 +150,9 @@ newrelic==9.1.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
-openedx-events==8.6.0
+openedx-events==8.7.0
+    # via -r requirements/test.txt
+openedx-filters==1.6.0
     # via -r requirements/test.txt
 packaging==23.2
     # via
@@ -299,5 +302,7 @@ wcwidth==0.2.8
     # via
     #   -r requirements/test.txt
     #   prompt-toolkit
+web-fragments==2.1.0
+    # via -r requirements/test.txt
 wrapt==1.15.0
     # via astroid
