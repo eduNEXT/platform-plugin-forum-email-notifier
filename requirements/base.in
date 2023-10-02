@@ -6,3 +6,4 @@ django-model-utils        # Provides TimeStampedModel abstract base class
 openedx-events
 edx_django_utils
 celery
+edx_ace

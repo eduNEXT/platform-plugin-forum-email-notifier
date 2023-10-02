@@ -19,6 +19,7 @@ astroid==2.15.8
 attrs==23.1.0
     # via
     #   -r requirements/test.txt
+    #   edx-ace
     #   openedx-events
 backports-zoneinfo[tzdata]==0.2.1
     # via
@@ -31,10 +32,18 @@ billiard==4.1.0
     #   celery
 celery==5.3.4
     # via -r requirements/test.txt
+certifi==2023.7.22
+    # via
+    #   -r requirements/test.txt
+    #   requests
 cffi==1.16.0
     # via
     #   -r requirements/test.txt
     #   pynacl
+charset-normalizer==3.3.0
+    # via
+    #   -r requirements/test.txt
+    #   requests
 click==8.1.7
     # via
     #   -r requirements/test.txt
@@ -77,6 +86,7 @@ django==3.2.21
     #   django-crum
     #   django-model-utils
     #   django-waffle
+    #   edx-ace
     #   edx-django-utils
     #   openedx-events
 django-crum==0.7.9
@@ -89,6 +99,8 @@ django-waffle==4.0.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
+edx-ace==1.7.0
+    # via -r requirements/test.txt
 edx-django-utils==5.7.0
     # via -r requirements/test.txt
 edx-lint==5.3.4
@@ -105,6 +117,10 @@ fastavro==1.8.3
     # via
     #   -r requirements/test.txt
     #   openedx-events
+idna==3.4
+    # via
+    #   -r requirements/test.txt
+    #   requests
 iniconfig==2.0.0
     # via
     #   -r requirements/test.txt
@@ -135,7 +151,7 @@ newrelic==9.1.0
     #   edx-django-utils
 openedx-events==8.6.0
     # via -r requirements/test.txt
-packaging==23.1
+packaging==23.2
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -143,7 +159,7 @@ pbr==5.11.1
     # via
     #   -r requirements/test.txt
     #   stevedore
-platformdirs==3.10.0
+platformdirs==3.11.0
     # via pylint
 pluggy==1.3.0
     # via
@@ -165,7 +181,7 @@ pycparser==2.21
     #   cffi
 pydocstyle==6.3.0
     # via -r requirements/quality.in
-pylint==2.17.6
+pylint==2.17.7
     # via
     #   edx-lint
     #   pylint-celery
@@ -200,6 +216,7 @@ python-dateutil==2.8.2
     # via
     #   -r requirements/test.txt
     #   celery
+    #   edx-ace
 python-slugify==8.0.1
     # via
     #   -r requirements/test.txt
@@ -212,9 +229,22 @@ pyyaml==6.0.1
     # via
     #   -r requirements/test.txt
     #   code-annotations
+requests==2.31.0
+    # via
+    #   -r requirements/test.txt
+    #   sailthru-client
+sailthru-client==2.2.3
+    # via
+    #   -r requirements/test.txt
+    #   edx-ace
+simplejson==3.19.1
+    # via
+    #   -r requirements/test.txt
+    #   sailthru-client
 six==1.16.0
     # via
     #   -r requirements/test.txt
+    #   edx-ace
     #   edx-lint
     #   python-dateutil
 snowballstemmer==2.2.0
@@ -227,6 +257,7 @@ stevedore==5.1.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
+    #   edx-ace
     #   edx-django-utils
     #   edx-opaque-keys
 text-unidecode==1.3
@@ -254,13 +285,17 @@ tzdata==2023.3
     #   -r requirements/test.txt
     #   backports-zoneinfo
     #   celery
+urllib3==2.0.5
+    # via
+    #   -r requirements/test.txt
+    #   requests
 vine==5.0.0
     # via
     #   -r requirements/test.txt
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.2.7
+wcwidth==0.2.8
     # via
     #   -r requirements/test.txt
     #   prompt-toolkit

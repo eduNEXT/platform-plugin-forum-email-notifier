@@ -19,6 +19,7 @@ asgiref==3.7.2
 attrs==23.1.0
     # via
     #   -r requirements/test.txt
+    #   edx-ace
     #   openedx-events
 babel==2.12.1
     # via
@@ -40,14 +41,18 @@ build==1.0.3
 celery==5.3.4
     # via -r requirements/test.txt
 certifi==2023.7.22
-    # via requests
+    # via
+    #   -r requirements/test.txt
+    #   requests
 cffi==1.16.0
     # via
     #   -r requirements/test.txt
     #   cryptography
     #   pynacl
-charset-normalizer==3.2.0
-    # via requests
+charset-normalizer==3.3.0
+    # via
+    #   -r requirements/test.txt
+    #   requests
 click==8.1.7
     # via
     #   -r requirements/test.txt
@@ -84,6 +89,7 @@ django==3.2.21
     #   django-crum
     #   django-model-utils
     #   django-waffle
+    #   edx-ace
     #   edx-django-utils
     #   openedx-events
 django-crum==0.7.9
@@ -105,6 +111,8 @@ docutils==0.19
     #   readme-renderer
     #   restructuredtext-lint
     #   sphinx
+edx-ace==1.7.0
+    # via -r requirements/test.txt
 edx-django-utils==5.7.0
     # via -r requirements/test.txt
 edx-opaque-keys[django]==2.5.1
@@ -120,7 +128,9 @@ fastavro==1.8.3
     #   -r requirements/test.txt
     #   openedx-events
 idna==3.4
-    # via requests
+    # via
+    #   -r requirements/test.txt
+    #   requests
 imagesize==1.4.1
     # via sphinx
 importlib-metadata==6.8.0
@@ -170,7 +180,7 @@ nh3==0.2.14
     # via readme-renderer
 openedx-events==8.6.0
     # via -r requirements/test.txt
-packaging==23.1
+packaging==23.2
     # via
     #   -r requirements/test.txt
     #   build
@@ -232,6 +242,7 @@ python-dateutil==2.8.2
     # via
     #   -r requirements/test.txt
     #   celery
+    #   edx-ace
 python-slugify==8.0.1
     # via
     #   -r requirements/test.txt
@@ -249,7 +260,9 @@ readme-renderer==42.0
     # via twine
 requests==2.31.0
     # via
+    #   -r requirements/test.txt
     #   requests-toolbelt
+    #   sailthru-client
     #   sphinx
     #   twine
 requests-toolbelt==1.0.0
@@ -258,13 +271,22 @@ restructuredtext-lint==1.4.0
     # via doc8
 rfc3986==2.0.0
     # via twine
-rich==13.5.3
+rich==13.6.0
     # via twine
+sailthru-client==2.2.3
+    # via
+    #   -r requirements/test.txt
+    #   edx-ace
 secretstorage==3.3.3
     # via keyring
+simplejson==3.19.1
+    # via
+    #   -r requirements/test.txt
+    #   sailthru-client
 six==1.16.0
     # via
     #   -r requirements/test.txt
+    #   edx-ace
     #   python-dateutil
 snowballstemmer==2.2.0
     # via sphinx
@@ -298,6 +320,7 @@ stevedore==5.1.0
     #   -r requirements/test.txt
     #   code-annotations
     #   doc8
+    #   edx-ace
     #   edx-django-utils
     #   edx-opaque-keys
 text-unidecode==1.3
@@ -329,6 +352,7 @@ tzdata==2023.3
     #   celery
 urllib3==2.0.5
     # via
+    #   -r requirements/test.txt
     #   requests
     #   twine
 vine==5.0.0
@@ -337,7 +361,7 @@ vine==5.0.0
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.2.7
+wcwidth==0.2.8
     # via
     #   -r requirements/test.txt
     #   prompt-toolkit
