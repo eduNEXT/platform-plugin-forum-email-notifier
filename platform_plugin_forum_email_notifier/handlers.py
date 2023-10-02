@@ -24,6 +24,9 @@ def forum_thread_created_handler(
         thread.body,
         thread.title,
         thread.url,
+        thread.user.id,
+        thread.user.pii.username,
+        thread.user.pii.email,
         object_type=ForumObject.THREAD,
     )
 
@@ -42,6 +45,9 @@ def forum_response_created_handler(
         thread.body,
         thread.title,
         thread.url,
+        thread.user.id,
+        thread.user.pii.username,
+        thread.user.pii.email,
         object_type=ForumObject.RESPONSE,
     )
 
@@ -60,5 +66,8 @@ def forum_comment_created_handler(
         thread.body,
         thread.title,
         thread.url,
+        thread.user.id,
+        thread.user.pii.username,
+        thread.user.pii.email,
         object_type=ForumObject.COMMENT,
     )

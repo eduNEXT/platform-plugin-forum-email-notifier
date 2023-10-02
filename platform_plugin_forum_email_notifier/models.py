@@ -51,3 +51,24 @@ class ForumNotificationPreference(TimeStampedModel):
     class Meta:
         ordering = ["-created"]
         unique_together = ["user", "course_id"]
+
+
+class ForumNotificationDigest(TimeStampedModel):
+    """
+    A model to store forum email notification digests for a user.
+
+    .. no_pii:
+    """
+
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name="forum_notification_digests",
+    )
+    course_id = CourseKeyField(max_length=255, db_index=True)
+    threads_json = models.TextField()
+    digest_type = models.IntegerField(choices=PreferenceOptions.choices)
+
+    class Meta:
+        ordering = ["-created"]
+        unique_together = ["user", "course_id"]

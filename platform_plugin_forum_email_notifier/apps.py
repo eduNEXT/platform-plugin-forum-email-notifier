@@ -12,6 +12,7 @@ class PlatformPluginForumEmailNotifierConfig(AppConfig):
     """
 
     name = "platform_plugin_forum_email_notifier"
+    verbose_name = "Forum Email Notifier"
 
     plugin_app = {
         "url_config": {

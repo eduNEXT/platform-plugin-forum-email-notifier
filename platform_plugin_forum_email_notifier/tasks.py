@@ -1,4 +1,5 @@
 """Tasks for the platform_plugin_forum_email_notifier plugin."""
+import json
 import logging
 
 from celery import shared_task
@@ -17,7 +18,11 @@ except ImportError:
 
 
 from platform_plugin_forum_email_notifier.email import send_forum_email_notification
-from platform_plugin_forum_email_notifier.models import ForumNotificationPreference, PreferenceOptions
+from platform_plugin_forum_email_notifier.models import (
+    ForumNotificationDigest,
+    ForumNotificationPreference,
+    PreferenceOptions,
+)
 from platform_plugin_forum_email_notifier.utils import ForumObject, get_staff_subscribers, get_subscribers
 
 log = logging.getLogger(__name__)
@@ -69,7 +74,18 @@ def send_email_notification(
 
 @shared_task
 @set_code_owner_attribute
-def notify_users(thread_id, discussion, course_id, body, title, url, object_type):
+def notify_users(
+    thread_id,
+    discussion,
+    course_id,
+    body,
+    title,
+    url,
+    author_id,
+    author_username,
+    author_email,
+    object_type,
+):
     """
     Get the subscribers for a thread and notify them.
     """
@@ -105,5 +121,75 @@ def notify_users(thread_id, discussion, course_id, body, title, url, object_type
             body,
             title,
             url,
+            author_id,
+            author_username,
+            author_email,
             object_type,
         )
+
+    handle_digests.delay(
+        thread_id,
+        discussion,
+        course_id,
+        body,
+        title,
+        url,
+        author_id,
+        author_username,
+        author_email,
+        object_type,
+    )
+
+
+@shared_task
+@set_code_owner_attribute
+def handle_digests(
+    thread_id,
+    discussion,
+    course_id,
+    body,
+    title,
+    url,
+    author_id,
+    author_username,
+    author_email,
+    object_type,
+):
+    """
+    Get the digest subscribers for a thread and notify them.
+    """
+    digest_preferences = ForumNotificationPreference.objects.filter(
+        preference__in=(
+            PreferenceOptions.ALL_POSTS_DAILY_DIGEST,
+            PreferenceOptions.ALL_POSTS_WEEKLY_DIGEST,
+        ),
+        course_id=course_id,
+    ).select_related("user")
+
+    for preference in digest_preferences:
+        digest, _ = ForumNotificationDigest.objects.get_or_create(
+            user=preference.user,
+            course_id=course_id,
+            defaults={
+                "threads_json": "[]",
+                "digest_type": preference.preference,
+            },
+        )
+        threads_json = json.loads(digest.threads_json)
+        threads_json.append(
+            {
+                "thread_id": thread_id,
+                "discussion": discussion,
+                "body": body,
+                "title": title,
+                "url": url,
+                "author_id": author_id,
+                "author_username": author_username,
+                "author_email": author_email,
+                "object_type": object_type,
+            }
+        )
+
+        digest.digest_type = preference.preference
+        digest.threads_json = json.dumps(threads_json)
+        digest.save()
