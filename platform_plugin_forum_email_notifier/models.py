@@ -3,9 +3,9 @@ Database models for forum_email_notifier.
 """
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.translation import gettext as _
 from model_utils.models import TimeStampedModel
 from opaque_keys.edx.django.models import CourseKeyField
-from django.utils.translation import gettext as _
 
 User = get_user_model()
 
