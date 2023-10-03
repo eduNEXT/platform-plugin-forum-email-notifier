@@ -6,6 +6,7 @@ from django.conf import settings
 from django.template import Context, Template
 from openedx_filters import PipelineStep
 from web_fragments.fragment import Fragment
+from crum import get_current_request
 
 from platform_plugin_forum_email_notifier.models import ForumNotificationPreference, PreferenceOptions
 
@@ -30,16 +31,16 @@ class AddInstructorNotifierTab(PipelineStep):
         course = context["course"]
         template = Template(self.resource_string("static/html/forum_notifier.html"))
 
-        # request = context["request"]
-        # preference_obj = ForumNotificationPreference.objects.get(
-        #     user=request.user, course_id=course.id
-        # )
+        request = get_current_request()
+        preference_obj = ForumNotificationPreference.objects.get(
+            user=request.user, course_id=course.id
+        )
 
         context.update(
             {
                 "forum_notifier_url": getattr(settings, "FORUM_NOTIFIER_URL", ""),
                 "options": PreferenceOptions.choices,
-                # "current_preference": preference_obj.preference,
+                "current_preference": preference_obj.preference,
             }
         )
 
