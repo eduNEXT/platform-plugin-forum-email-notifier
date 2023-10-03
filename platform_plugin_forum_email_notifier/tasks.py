@@ -4,6 +4,7 @@ import logging
 
 from celery import shared_task
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from edx_ace.recipient import Recipient
 from edx_django_utils.monitoring import set_code_owner_attribute
 
@@ -17,7 +18,7 @@ except ImportError:
     get_user_preference = object
 
 
-from platform_plugin_forum_email_notifier.email import send_forum_email_notification
+from platform_plugin_forum_email_notifier.email import send_digest_email_notification, send_forum_email_notification
 from platform_plugin_forum_email_notifier.models import (
     ForumNotificationDigest,
     ForumNotificationPreference,
@@ -34,7 +35,17 @@ User = get_user_model()
 @shared_task
 @set_code_owner_attribute
 def send_email_notification(
-    subscriber, course_id, thread_body, thread_title, thread_url, thread_type
+    thread_id,
+    discussion,
+    course_id,
+    body,
+    title,
+    url,
+    author_id,
+    author_username,
+    author_email,
+    object_type,
+    subscriber,
 ):
     """
     Send a email notification to a subscriber user for forum updates.
@@ -64,10 +75,15 @@ def send_email_notification(
             "user": user,
             "course_id": course_id,
             "course_name": course.display_name,
-            "thread_body": thread_body,
-            "thread_title": thread_title,
-            "thread_url": thread_url,
-            "thread_type": thread_type,
+            "thread_id": thread_id,
+            "discussion": discussion,
+            "body": body,
+            "title": title,
+            "url": url,
+            "author_id": author_id,
+            "author_username": author_username,
+            "author_email": author_email,
+            "object_type": object_type,
         },
     )
 
@@ -116,8 +132,9 @@ def notify_users(
             log.warning(f"User {subscriber} does not exist")
             return
         send_email_notification.delay(
-            subscriber,
-            str(course_id),
+            thread_id,
+            discussion,
+            course_id,
             body,
             title,
             url,
@@ -125,6 +142,7 @@ def notify_users(
             author_username,
             author_email,
             object_type,
+            subscriber,
         )
 
     handle_digests.delay(
@@ -193,3 +211,33 @@ def handle_digests(
         digest.digest_type = preference.preference
         digest.threads_json = json.dumps(threads_json)
         digest.save()
+
+
+@shared_task
+@set_code_owner_attribute
+def send_digest(
+    digest_id,
+):
+    """
+    Send digests to users.
+    """
+    digest = ForumNotificationDigest.objects.get(id=digest_id)
+    user = digest.user
+
+    course = get_course_overview_or_none(digest.course_id)
+
+    language_preference = get_user_preference(user, LANGUAGE_KEY)
+
+    send_digest_email_notification(
+        recipient=Recipient(user.id, user.email),
+        language=language_preference,
+        user_context={
+            "user": user,
+            "course_id": digest.course_id,
+            "course_name": course.display_name,
+            "threads": json.loads(digest.threads_json),
+        },
+    )
+    digest.last_sent = timezone.now()
+    digest.threads_json = "[]"
+    digest.save()

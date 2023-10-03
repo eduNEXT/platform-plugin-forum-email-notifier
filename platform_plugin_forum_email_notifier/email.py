@@ -15,9 +15,29 @@ class ForumEmailNotification(MessageType):
     """
 
 
+class DigestEmailNotification(MessageType):
+    """
+    Message type for forum digest email notification.
+    """
+
+
 def send_forum_email_notification(recipient, language, user_context):
     """Send email notification for forum events to suscribers."""
     forum_email_message_type = ForumEmailNotification()
+    msg = forum_email_message_type.personalize(
+        recipient=recipient,
+        language=language,
+        user_context=user_context,
+    )
+    with emulate_http_request(
+        site=Site.objects.get_current(), user=user_context.get("user")
+    ):
+        ace.send(msg)
+
+
+def send_digest_email_notification(recipient, language, user_context):
+    """Send email notification for forum events to suscribers."""
+    forum_email_message_type = DigestEmailNotification()
     msg = forum_email_message_type.personalize(
         recipient=recipient,
         language=language,

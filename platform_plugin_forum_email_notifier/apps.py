@@ -46,3 +46,4 @@ class PlatformPluginForumEmailNotifierConfig(AppConfig):
             tasks,
         )
         from platform_plugin_forum_email_notifier.extensions import filters
+        from platform_plugin_forum_email_notifier.management.commands.forum_digest import Command

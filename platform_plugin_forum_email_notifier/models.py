@@ -68,6 +68,7 @@ class ForumNotificationDigest(TimeStampedModel):
     course_id = CourseKeyField(max_length=255, db_index=True)
     threads_json = models.TextField()
     digest_type = models.IntegerField(choices=PreferenceOptions.choices)
+    last_sent = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ["-created"]
