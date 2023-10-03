@@ -51,12 +51,17 @@ def send_email_notification(
     Send a email notification to a subscriber user for forum updates.
 
     Arguments:
-        subscriber: The id of the user to send the email notification
-        course_id: The id of the course
-        thread_body: The body of the new thread/comment/response
-        thread_title: The title of the new thread/comment/response
-        thread_url: The base URL of the thread
-        thread_type: The type of the thread (thread, comment, response)
+        thread_id (str): The thread id.
+        discussion (dict): The discussion dict.
+        course_id (str): The course id.
+        body (str): The body of the post.
+        title (str): The title of the post.
+        url (str): The url of the post.
+        author_id (str): The author id.
+        author_username (str): The author username.
+        author_email (str): The author email.
+        object_type (str): The forum object type.
+        subscriber (id): The subscriber id.
     """
     try:
         user = User.objects.get(id=subscriber)
@@ -104,6 +109,18 @@ def notify_users(
 ):
     """
     Get the subscribers for a thread and notify them.
+
+    Arguments:
+        thread_id (str): The thread id.
+        discussion (dict): The discussion dict.
+        course_id (str): The course id.
+        body (str): The body of the post.
+        title (str): The title of the post.
+        url (str): The url of the post.
+        author_id (str): The author id.
+        author_username (str): The author username.
+        author_email (str): The author email.
+        object_type (str): The forum object type.
     """
     if object_type == ForumObject.THREAD:
         subscribers = get_subscribers(thread_id)
@@ -175,6 +192,18 @@ def handle_digests(
 ):
     """
     Get the digest subscribers for a thread and notify them.
+
+    Arguments:
+        thread_id (str): The thread id.
+        discussion (dict): The discussion dict.
+        course_id (str): The course id.
+        body (str): The body of the post.
+        title (str): The title of the post.
+        url (str): The url of the post.
+        author_id (str): The author id.
+        author_username (str): The author username.
+        author_email (str): The author email.
+        object_type (str): The forum object type.
     """
     digest_preferences = ForumNotificationPreference.objects.filter(
         preference__in=(
@@ -219,7 +248,10 @@ def send_digest(
     digest_id,
 ):
     """
-    Send digests to users.
+    Send the acumulated digest to the user.
+
+    Arguments:
+        digest_id (str): The digest id.
     """
     digest = ForumNotificationDigest.objects.get(id=digest_id)
     user = digest.user
