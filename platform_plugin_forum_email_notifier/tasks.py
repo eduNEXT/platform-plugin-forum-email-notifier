@@ -30,7 +30,8 @@ def send_email_notification(
     subscriber, course_id, thread_body, thread_title, thread_url, thread_type
 ):
     """
-    Serialize a course and writes it to ClickHouse.
+    Send a email notification to a subscriber user for forum updates.
+
     Arguments:
         subscriber: The id of the user to send the email notification
         course_id: The id of the course
