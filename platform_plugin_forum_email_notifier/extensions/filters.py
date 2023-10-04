@@ -58,7 +58,10 @@ class AddInstructorNotifierTab(PipelineStep):
             "template_path_prefix": TEMPLATE_ABSOLUTE_PATH,
         }
         context["sections"].append(section_data)
-        return context
+        return {
+            "context": context,
+            "template": template_name,
+        }
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
