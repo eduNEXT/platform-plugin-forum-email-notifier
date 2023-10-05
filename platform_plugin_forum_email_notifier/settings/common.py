@@ -5,7 +5,6 @@ https://docs.djangoproject.com/en/2.22/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.22/ref/settings/
 """
-import os
 from os.path import abspath, dirname, join
 
 # Quick-start development settings - unsuitable for production
@@ -29,9 +28,17 @@ TIME_ZONE = "UTC"
 
 USE_TZ = True
 
-here = lambda *x: join(abspath(dirname(__file__)), *x)
+
+def here(*x):
+    return join(abspath(dirname(__file__)), *x)
+
+
 PROJECT_ROOT = here("..")
-root = lambda *x: join(abspath(PROJECT_ROOT), *x)
+
+
+def root(*x):
+    return join(abspath(PROJECT_ROOT), *x)
+
 
 # TEMPLATE CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.8/ref/settings/#templates
@@ -58,7 +65,8 @@ TEMPLATES = [
     },
 ]
 
-def plugin_settings(settings):
+
+def plugin_settings(settings):  # pylint: disable=unused-argument
     """
     Set of plugin settings used by the Open Edx platform.
     More info: https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/plugins/README.rst
