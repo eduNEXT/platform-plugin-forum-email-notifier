@@ -86,19 +86,27 @@ django==3.2.22
     #   django-crum
     #   django-model-utils
     #   django-waffle
+    #   djangorestframework
     #   edx-ace
     #   edx-django-utils
     #   openedx-events
+    #   openedx-filters
 django-crum==0.7.9
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
 django-model-utils==4.3.1
     # via -r requirements/test.txt
+django-rest-framework==0.1.0
+    # via -r requirements/test.txt
 django-waffle==4.0.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
+djangorestframework==3.14.0
+    # via
+    #   -r requirements/test.txt
+    #   django-rest-framework
 edx-ace==1.7.0
     # via -r requirements/test.txt
 edx-django-utils==5.7.0
@@ -150,6 +158,8 @@ newrelic==9.1.0
     #   -r requirements/test.txt
     #   edx-django-utils
 openedx-events==8.9.0
+    # via -r requirements/test.txt
+openedx-filters==1.6.0
     # via -r requirements/test.txt
 packaging==23.2
     # via
@@ -225,6 +235,7 @@ pytz==2023.3.post1
     # via
     #   -r requirements/test.txt
     #   django
+    #   djangorestframework
 pyyaml==6.0.1
     # via
     #   -r requirements/test.txt
@@ -299,5 +310,7 @@ wcwidth==0.2.8
     # via
     #   -r requirements/test.txt
     #   prompt-toolkit
+web-fragments==2.1.0
+    # via -r requirements/test.txt
 wrapt==1.15.0
     # via astroid

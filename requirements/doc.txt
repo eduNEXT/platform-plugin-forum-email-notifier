@@ -89,19 +89,27 @@ django==3.2.22
     #   django-crum
     #   django-model-utils
     #   django-waffle
+    #   djangorestframework
     #   edx-ace
     #   edx-django-utils
     #   openedx-events
+    #   openedx-filters
 django-crum==0.7.9
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
 django-model-utils==4.3.1
     # via -r requirements/test.txt
+django-rest-framework==0.1.0
+    # via -r requirements/test.txt
 django-waffle==4.0.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
+djangorestframework==3.14.0
+    # via
+    #   -r requirements/test.txt
+    #   django-rest-framework
 doc8==1.1.1
     # via -r requirements/doc.in
 docutils==0.19
@@ -180,6 +188,8 @@ nh3==0.2.14
     # via readme-renderer
 openedx-events==8.9.0
     # via -r requirements/test.txt
+openedx-filters==1.6.0
+    # via -r requirements/test.txt
 packaging==23.2
     # via
     #   -r requirements/test.txt
@@ -252,6 +262,7 @@ pytz==2023.3.post1
     #   -r requirements/test.txt
     #   babel
     #   django
+    #   djangorestframework
 pyyaml==6.0.1
     # via
     #   -r requirements/test.txt
@@ -365,6 +376,8 @@ wcwidth==0.2.8
     # via
     #   -r requirements/test.txt
     #   prompt-toolkit
+web-fragments==2.1.0
+    # via -r requirements/test.txt
 zipp==3.17.0
     # via
     #   importlib-metadata

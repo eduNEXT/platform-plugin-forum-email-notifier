@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<div class="email-notifier-instructor-wrapper">
+    {% trans "Forum email notifications preferences" %}
+
+    <select class="email-notifications-select">
+        {% for value, text in options %}
+        {% if value == current_preference  %}
+        <option class="email-notifications-options" value={{value}} selected>{{ text }}</option>
+        {% else %}
+        <option class="email-notifications-options" value={{value}}>{{ text }}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+</div>
