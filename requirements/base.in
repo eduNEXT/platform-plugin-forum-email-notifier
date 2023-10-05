@@ -7,3 +7,6 @@ openedx-events
 edx_django_utils
 celery
 edx_ace
+openedx_filters
+web_fragments
+django-rest-framework

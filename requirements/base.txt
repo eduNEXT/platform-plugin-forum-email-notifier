@@ -46,15 +46,21 @@ django==3.2.22
     #   django-crum
     #   django-model-utils
     #   django-waffle
+    #   djangorestframework
     #   edx-ace
     #   edx-django-utils
     #   openedx-events
+    #   openedx-filters
 django-crum==0.7.9
     # via edx-django-utils
 django-model-utils==4.3.1
     # via -r requirements/base.in
+django-rest-framework==0.1.0
+    # via -r requirements/base.in
 django-waffle==4.0.0
     # via edx-django-utils
+djangorestframework==3.14.0
+    # via django-rest-framework
 edx-ace==1.7.0
     # via -r requirements/base.in
 edx-django-utils==5.7.0
@@ -70,6 +76,8 @@ kombu==5.3.2
 newrelic==9.1.0
     # via edx-django-utils
 openedx-events==8.9.0
+    # via -r requirements/base.in
+openedx-filters==1.6.0
     # via -r requirements/base.in
 pbr==5.11.1
     # via stevedore
@@ -88,7 +96,9 @@ python-dateutil==2.8.2
     #   celery
     #   edx-ace
 pytz==2023.3.post1
-    # via django
+    # via
+    #   django
+    #   djangorestframework
 requests==2.31.0
     # via sailthru-client
 sailthru-client==2.2.3
@@ -124,3 +134,5 @@ vine==5.0.0
     #   kombu
 wcwidth==0.2.8
     # via prompt-toolkit
+web-fragments==2.1.0
+    # via -r requirements/base.in

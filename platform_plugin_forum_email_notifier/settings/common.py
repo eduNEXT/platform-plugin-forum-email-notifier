@@ -7,6 +7,8 @@ https://docs.djangoproject.com/en/2.22/ref/settings/
 """
 from os.path import abspath, dirname, join
 
+from platform_plugin_forum_email_notifier import ROOT_DIRECTORY
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.22/howto/deployment/checklist/
 
@@ -16,7 +18,9 @@ SECRET_KEY = "secret-key"
 
 # Application definition
 
-INSTALLED_APPS = []
+INSTALLED_APPS = [
+    "platform_plugin_forum_email_notifier",
+]
 
 
 # Internationalization
@@ -66,8 +70,10 @@ TEMPLATES = [
 ]
 
 
-def plugin_settings(settings):  # pylint: disable=unused-argument
+def plugin_settings(settings):
     """
     Set of plugin settings used by the Open Edx platform.
     More info: https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/plugins/README.rst
     """
+    settings.MAKO_TEMPLATE_DIRS_BASE.append(ROOT_DIRECTORY / "templates")
+    settings.FORUM_NOTIFIER_URL = "api/forum_email_notification_preference"

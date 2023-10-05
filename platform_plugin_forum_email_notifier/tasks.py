@@ -17,6 +17,8 @@ except ImportError:
 
 
 from platform_plugin_forum_email_notifier.email import send_forum_email_notification
+from platform_plugin_forum_email_notifier.models import ForumNotificationPreference, PreferenceOptions
+from platform_plugin_forum_email_notifier.utils import ForumObject, get_staff_subscribers, get_subscribers
 
 log = logging.getLogger(__name__)
 celery_log = logging.getLogger("edx.celery.task")
@@ -63,3 +65,45 @@ def send_email_notification(
             "thread_type": thread_type,
         },
     )
+
+
+@shared_task
+@set_code_owner_attribute
+def notify_users(thread_id, discussion, course_id, body, title, url, object_type):
+    """
+    Get the subscribers for a thread and notify them.
+    """
+    if object_type == ForumObject.THREAD:
+        subscribers = get_subscribers(thread_id)
+    elif object_type in (ForumObject.RESPONSE, ForumObject.COMMENT):
+        subscribers = get_subscribers(discussion.get("id"))
+    else:
+        raise ValueError(f"Invalid thread event type: {object_type}")
+
+    staff_subscribers = get_staff_subscribers(course_id)
+
+    subscribers = subscribers | staff_subscribers
+
+    for subscriber in subscribers:
+        try:
+            user = User.objects.get(id=subscriber)
+            preference = ForumNotificationPreference.objects.get(
+                user=user, course_id=course_id
+            )
+            if preference.preference in (
+                PreferenceOptions.NONE,
+                PreferenceOptions.ALL_POSTS_DAILY_DIGEST,
+                PreferenceOptions.ALL_POSTS_WEEKLY_DIGEST,
+            ):
+                continue
+        except User.DoesNotExist:
+            log.warning(f"User {subscriber} does not exist")
+            return
+        send_email_notification.delay(
+            subscriber,
+            str(course_id),
+            body,
+            title,
+            url,
+            object_type,
+        )
