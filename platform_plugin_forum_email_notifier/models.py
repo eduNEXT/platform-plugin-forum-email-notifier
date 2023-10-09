@@ -12,9 +12,7 @@ User = get_user_model()
 
 class PreferenceOptions(models.IntegerChoices):
     """
-    A model to store forum email notification preferences for a user.
-
-    .. no_pii:
+    Options for forum email notification preferences.
     """
 
     NONE = 1, _("None")
@@ -27,10 +25,6 @@ class PreferenceOptions(models.IntegerChoices):
 class ForumNotificationPreference(TimeStampedModel):
     """
     A model to store forum email notification preferences for a user.
-
-    TODO: Add either a negative or a positive PII annotation to the end of this docstring.  For more
-    information, see OEP-30:
-    https://open-edx-proposals.readthedocs.io/en/latest/oep-0030-arch-pii-markup-and-auditing.html
 
     .. no_pii:
     """
@@ -54,6 +48,46 @@ class ForumNotificationPreference(TimeStampedModel):
 
     class Meta:
         """Meta class for ForumNotificationPreference."""
+
+        ordering = ["-created"]
+        unique_together = ["user", "course_id"]
+
+
+class ForumNotificationDigest(TimeStampedModel):
+    """
+    A model to store forum email notification digests for a user.
+
+    threads_json is a json string of threads. It's used to store the forum updates
+    for the digest. The format is:
+    {
+    "thread_id": thread_id,
+    "discussion": discussion,
+    "body": body,
+    "title": title,
+    "url": url,
+    "author_id": author_id,
+    "author_username": author_username,
+    "author_email": author_email,
+    "object_type": object_type,
+    }
+
+    .. no_pii:
+    """
+
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name="forum_notification_digests",
+    )
+    course_id = CourseKeyField(max_length=255, db_index=True)
+    """
+    """
+    threads_json = models.TextField()
+    digest_type = models.IntegerField(choices=PreferenceOptions.choices)
+    last_sent = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        """Meta class for ForumNotificationDigest."""
 
         ordering = ["-created"]
         unique_together = ["user", "course_id"]
