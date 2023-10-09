@@ -16,6 +16,15 @@ Unreleased
 
 *
 
+0.2.0 - 2023-10-09
+**********************************************
+
+Added
+=====
+* Added email notification for forum updates.
+* Added instructor dashboard integration.
+* Added ``forum_digest`` command to trigger digest notification.
+
 0.1.0 – 2023-09-28
 **********************************************
 
