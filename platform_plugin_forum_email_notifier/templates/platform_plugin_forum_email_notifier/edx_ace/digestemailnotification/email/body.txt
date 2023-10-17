@@ -4,9 +4,14 @@
     {% blocktrans %}Summary of Discussion Activity{% endblocktrans %}
 
     {% for thread in threads %}
-        {{ thread.title}}: {{ thread.body }}.
-        {% blocktrans %}To view the thread, click the link below: {% endblocktrans %}{{ thread.url }}discussions/{{ course_id }}/posts/{{ thread.thread_id }}
-
+        {% if object_type == 1 %}
+            {{ thread.title}}: {{ thread.body }}
+            {% blocktrans %}To view the thread, click the link below: {% endblocktrans %}{{ thread.url }}discussions/{{ course_id }}/posts/{{ thread.thread_id }}
+        {% elif object_type == 2 %}
+            {% trans "Comment" %}: {{ thread.body }}
+        {% else %}
+            {% trans "Response" %}: {{ thread.body }}
+        {% endif %}
     {% endfor %}
 
     {% blocktrans %}You are receiving this email because you set your preferences to receive a summary of all discussion activity. To stop receiving this email, please change your settings in the following link: {{ forum_notifier_url }}{% endblocktrans %}
