@@ -10,9 +10,7 @@ from edx_ace.recipient import Recipient
 from edx_django_utils.monitoring import set_code_owner_attribute
 
 try:
-    from openedx.core.djangoapps.content.course_overviews.api import (
-        get_course_overview_or_none,
-    )
+    from openedx.core.djangoapps.content.course_overviews.api import get_course_overview_or_none
     from openedx.core.djangoapps.lang_pref import LANGUAGE_KEY
     from openedx.core.djangoapps.user_api.preferences.api import get_user_preference
 except ImportError:
@@ -20,21 +18,13 @@ except ImportError:
     LANGUAGE_KEY = object
     get_user_preference = object
 
-
-from platform_plugin_forum_email_notifier.email import (
-    send_digest_email_notification,
-    send_forum_email_notification,
-)
+from platform_plugin_forum_email_notifier.email import send_digest_email_notification, send_forum_email_notification
 from platform_plugin_forum_email_notifier.models import (
     ForumNotificationDigest,
     ForumNotificationPreference,
     PreferenceOptions,
 )
-from platform_plugin_forum_email_notifier.utils import (
-    ForumObject,
-    get_staff_subscribers,
-    get_subscribers,
-)
+from platform_plugin_forum_email_notifier.utils import ForumObject, get_staff_subscribers, get_subscribers
 
 log = logging.getLogger(__name__)
 celery_log = logging.getLogger("edx.celery.task")
