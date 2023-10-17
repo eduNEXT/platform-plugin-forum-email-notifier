@@ -1,0 +1,140 @@
+# Description:
+#   This plugin define two cronjobs to send forum digest emails.
+#   `forum-email-notifier-daily-digest-cronjob`: send daily digest emails.
+#   `forum-email-notifier-weekly-digest-cronjob`: send weekly digest emails.
+# Note: The actual digest is triggered depending on the `last_sent` field of the
+# model, and do not depend on the schedule of the job. The job is scheduled
+# to run at midnight to avoid any timezone issue.
+name: forum-email-notifier
+patches:
+  k8s-deployments: |
+    ---
+    # Run daily forum email notifier
+    apiVersion: batch/v1
+    kind: CronJob
+    metadata:
+      name: forum-email-notifier-daily-digest-cronjob
+      labels:
+        app.kubernetes.io/name: forum-email-notifier-daily-digest-cronjob
+    spec:
+      schedule: "0 0 * * *"
+      jobTemplate:
+        spec:
+          template:
+            spec:
+              securityContext:
+                runAsUser: 1000
+                runAsGroup: 1000
+              containers:
+                - name: forum-email-notifier-daily-digest-cronjob
+                  image: {{ DOCKER_IMAGE_OPENEDX }}
+                  env:
+                  - name: SERVICE_VARIANT
+                    value: lms
+                  - name: DJANGO_SETTINGS_MODULE
+                    value: lms.envs.tutor.production
+                  - name: UWSGI_WORKERS
+                    value: "2"
+                  ports:
+                    - containerPort: 8000
+                  volumeMounts:
+                    - mountPath: /openedx/edx-platform/lms/envs/tutor/
+                      name: settings-lms
+                    - mountPath: /openedx/edx-platform/cms/envs/tutor/
+                      name: settings-cms
+                    - mountPath: /openedx/config
+                      name: config
+                    - mountPath: /openedx/edx-platform/uwsgi.ini
+                      name: uwsgi-config
+                      subPath: uwsgi.ini
+                  resources:
+                    requests:
+                      memory: 2Gi
+                  securityContext:
+                    allowPrivilegeEscalation: false
+                  command:
+                  - /bin/sh
+                  - -c
+                  - python manage.py lms forum_digest --digest daily
+              restartPolicy: OnFailure
+              volumes:
+                - name: settings-lms
+                  configMap:
+                    name: openedx-settings-lms
+                - name: settings-cms
+                  configMap:
+                    name: openedx-settings-cms
+                - name: config
+                  configMap:
+                    name: openedx-config
+                - name: uwsgi-config
+                  configMap:
+                    name: openedx-uwsgi-config
+                    items:
+                    - key: uwsgi.ini
+                      path: uwsgi.ini
+    ---
+    # Run weekly forum email notifier
+    apiVersion: batch/v1
+    kind: CronJob
+    metadata:
+      name: forum-email-notifier-weekly-digest-cronjob
+      labels:
+        app.kubernetes.io/name: forum-email-notifier-weekly-digest-cronjob
+    spec:
+      schedule: "0 0 * * 0"
+      jobTemplate:
+        spec:
+          template:
+            spec:
+              securityContext:
+                runAsUser: 1000
+                runAsGroup: 1000
+              containers:
+                - name: forum-email-notifier-weekly-digest-cronjob
+                  image: {{ DOCKER_IMAGE_OPENEDX }}
+                  env:
+                  - name: SERVICE_VARIANT
+                    value: lms
+                  - name: DJANGO_SETTINGS_MODULE
+                    value: lms.envs.tutor.production
+                  - name: UWSGI_WORKERS
+                    value: "2"
+                  ports:
+                    - containerPort: 8000
+                  volumeMounts:
+                    - mountPath: /openedx/edx-platform/lms/envs/tutor/
+                      name: settings-lms
+                    - mountPath: /openedx/edx-platform/cms/envs/tutor/
+                      name: settings-cms
+                    - mountPath: /openedx/config
+                      name: config
+                    - mountPath: /openedx/edx-platform/uwsgi.ini
+                      name: uwsgi-config
+                      subPath: uwsgi.ini
+                  resources:
+                    requests:
+                      memory: 2Gi
+                  securityContext:
+                    allowPrivilegeEscalation: false
+                  command:
+                  - /bin/sh
+                  - -c
+                  - python manage.py lms forum_digest --digest weekly
+              restartPolicy: OnFailure
+              volumes:
+                - name: settings-lms
+                  configMap:
+                    name: openedx-settings-lms
+                - name: settings-cms
+                  configMap:
+                    name: openedx-settings-cms
+                - name: config
+                  configMap:
+                    name: openedx-config
+                - name: uwsgi-config
+                  configMap:
+                    name: openedx-uwsgi-config
+                    items:
+                    - key: uwsgi.ini
+                      path: uwsgi.ini
