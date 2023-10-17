@@ -10,3 +10,4 @@ edx_ace
 openedx_filters
 web_fragments
 django-rest-framework
+beautifulsoup4
