@@ -2,32 +2,30 @@
 
 {% load i18n %}
 {% load static %}
+
 {% block content %}
 <table width="100%" align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
         <td>
             <h1>
-                {% trans "Forum Digest" as tmsg %}{{ tmsg | force_escape }}
+                {% trans "Summary of Discussion Activity" as tmsg %}{{ tmsg | force_escape }}
             </h1>
-            <p style="color: rgba(0,0,0,.75);">
-                {% filter force_escape %}
-                {% blocktrans %}Activity in the discussion:{% endblocktrans %}
-                {% endfilter %}
-                <br />
-            </p>
 
-            {% filter force_escape %}
-                {% blocktrans asvar course_cta_text %}Visit discussions{% endblocktrans %}
-            {% endfilter %}
-            {% include "ace_common/edx_ace/common/return_to_course_cta.html" with course_cta_text=course_cta_text course_cta_url=confirm_link %}
+            {% for thread in threads %}
+                <p style="color: rgba(0,0,0,.75);">
+                    <a href="{{ thread.url }}discussions/{{ course_id }}/posts/{{ thread.thread_id }}">{{ thread.title }}</a>: {{ thread.body }}...
+                    <br />
+                </p>
+            {% endfor %}
 
             <p style="color: rgba(0,0,0,.75);">
-                {% filter force_escape %}
-                {% blocktrans %}.{% endblocktrans %}
-                {% endfilter %}
+                {% autoescape off %}
+                {# xss-lint: disable=django-blocktrans-missing-escape-filter #}
+                {% blocktrans %}You are receiving this email because you set your preferences to receive a summary of all discussion activity. To stop receiving this email, please change your settings{% endblocktrans %}
+                <a href="{{ forum_notifier_url }}">{% trans "here" %}</a>.
+                {% endautoescape %}
                 <br />
             </p>
-
         </td>
     </tr>
 </table>

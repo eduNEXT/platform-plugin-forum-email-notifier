@@ -2,6 +2,7 @@
 import json
 import logging
 
+from bs4 import BeautifulSoup
 from celery import shared_task
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -9,7 +10,9 @@ from edx_ace.recipient import Recipient
 from edx_django_utils.monitoring import set_code_owner_attribute
 
 try:
-    from openedx.core.djangoapps.content.course_overviews.api import get_course_overview_or_none
+    from openedx.core.djangoapps.content.course_overviews.api import (
+        get_course_overview_or_none,
+    )
     from openedx.core.djangoapps.lang_pref import LANGUAGE_KEY
     from openedx.core.djangoapps.user_api.preferences.api import get_user_preference
 except ImportError:
@@ -18,13 +21,20 @@ except ImportError:
     get_user_preference = object
 
 
-from platform_plugin_forum_email_notifier.email import send_digest_email_notification, send_forum_email_notification
+from platform_plugin_forum_email_notifier.email import (
+    send_digest_email_notification,
+    send_forum_email_notification,
+)
 from platform_plugin_forum_email_notifier.models import (
     ForumNotificationDigest,
     ForumNotificationPreference,
     PreferenceOptions,
 )
-from platform_plugin_forum_email_notifier.utils import ForumObject, get_staff_subscribers, get_subscribers
+from platform_plugin_forum_email_notifier.utils import (
+    ForumObject,
+    get_staff_subscribers,
+    get_subscribers,
+)
 
 log = logging.getLogger(__name__)
 celery_log = logging.getLogger("edx.celery.task")
@@ -69,9 +79,13 @@ def send_email_notification(
         log.warning(f"User {subscriber} does not exist")
         return
 
+    soup = BeautifulSoup(body, "html.parser")
+    body = soup.get_text()[:160]
+
     course = get_course_overview_or_none(course_id)
 
     language_preference = get_user_preference(user, LANGUAGE_KEY)
+    post_id = thread_id if title else discussion.get("id")
 
     send_forum_email_notification(
         recipient=Recipient(user.id, user.email),
@@ -84,7 +98,7 @@ def send_email_notification(
             "discussion": discussion,
             "body": body,
             "title": title,
-            "url": url,
+            "url": f"{url}discussions/{course_id}/posts/{post_id}",
             "author_id": author_id,
             "author_username": author_username,
             "author_email": author_email,
@@ -264,7 +278,13 @@ def send_digest(
     digest = ForumNotificationDigest.objects.get(id=digest_id)
     user = digest.user
 
+    threads = json.loads(digest.threads_json)
+    for thread in threads:
+        soup = BeautifulSoup(thread.get("body"), "html.parser")
+        thread["body"] = soup.get_text()[:160]
+
     course = get_course_overview_or_none(digest.course_id)
+    forum_notifier_url = "{course_url}/instructor#view-forum_notifier"
 
     language_preference = get_user_preference(user, LANGUAGE_KEY)
 
@@ -275,7 +295,8 @@ def send_digest(
             "user": user,
             "course_id": digest.course_id,
             "course_name": course.display_name,
-            "threads": json.loads(digest.threads_json),
+            "threads": threads,
+            "forum_notifier_url": forum_notifier_url,
         },
     )
     digest.last_sent = timezone.now()
