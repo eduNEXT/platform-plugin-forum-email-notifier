@@ -2,8 +2,7 @@ Forum Email Notifier
 ####################################
 
 
-|pypi-badge| |ci-badge| |codecov-badge| |doc-badge| |pyversions-badge|
-|license-badge| |status-badge|
+|ci-badge| |license-badge| |status-badge|
 
 Purpose
 *******
@@ -131,9 +130,10 @@ file in this repo.
 Reporting Security Issues
 *************************
 
-Please do not report security issues in public. Please email security@openedx.org.
+Please do not report security issues in public. Please email security@edunext.co.
 
-.. |pypi-badge| image:: https://img.shields.io/pypi/v/platform_plugin_forum_email_notifier.svg
+.. It's not required by our contractor at the moment but can be published later
+.. .. |pypi-badge| image:: https://img.shields.io/pypi/v/platform_plugin_forum_email_notifier.svg
     :target: https://pypi.python.org/pypi/platform_plugin_forum_email_notifier/
     :alt: PyPI
 
@@ -141,24 +141,13 @@ Please do not report security issues in public. Please email security@openedx.or
     :target: https://github.com/eduNEXT/platform_plugin_forum_email_notifier/actions
     :alt: CI
 
-.. |codecov-badge| image:: https://codecov.io/github/eduNEXT/platform_plugin_forum_email_notifier/coverage.svg?branch=main
-    :target: https://codecov.io/github/eduNEXT/platform_plugin_forum_email_notifier?branch=main
-    :alt: Codecov
-
-.. |doc-badge| image:: https://readthedocs.org/projects/platform_plugin_forum_email_notifier/badge/?version=latest
-    :target: https://docs.openedx.org/projects/platform_plugin_forum_email_notifier
-    :alt: Documentation
-
-.. |pyversions-badge| image:: https://img.shields.io/pypi/pyversions/platform_plugin_forum_email_notifier.svg
-    :target: https://pypi.python.org/pypi/platform_plugin_forum_email_notifier/
-    :alt: Supported Python versions
-
 .. |license-badge| image:: https://img.shields.io/github/license/eduNEXT/platform_plugin_forum_email_notifier.svg
     :target: https://github.com/eduNEXT/platform_plugin_forum_email_notifier/blob/main/LICENSE.txt
     :alt: License
 
 .. TODO: Choose one of the statuses below and remove the other status-badge lines.
-.. |status-badge| image:: https://img.shields.io/badge/Status-Experimental-yellow
-.. .. |status-badge| image:: https://img.shields.io/badge/Status-Maintained-brightgreen
+.. .. |status-badge| image:: https://img.shields.io/badge/Status-Experimental-yellow
+.. |status-badge| image:: https://img.shields.io/badge/Status-Maintained-brightgreen
 .. .. |status-badge| image:: https://img.shields.io/badge/Status-Deprecated-orange
 .. .. |status-badge| image:: https://img.shields.io/badge/Status-Unsupported-red
+
