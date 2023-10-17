@@ -12,10 +12,22 @@
             </h1>
 
             {% for thread in threads %}
-                <p style="color: rgba(0,0,0,.75);">
-                    <a href="{{ thread.url }}discussions/{{ course_id }}/posts/{{ thread.thread_id }}">{{ thread.title }}</a>: {{ thread.body }}...
-                    <br />
-                </p>
+                {% if thread.object_type == 1 %}
+                    <p style="color: rgba(0,0,0,.75);">
+                        <a href="{{ thread.url }}discussions/{{ course_id }}/posts/{{ thread.thread_id }}">{{ thread.title }} ↗</a>: {{ thread.body }}
+                        <br />
+                    </p>
+                {% elif thread.object_type == 2 %}
+                    <p style="color: rgba(0,0,0,.75);">
+                        <i>{% trans "Response" %}</i>: {{ thread.body }}
+                        <br />
+                    </p>
+                {% else %}
+                    <p style="color: rgba(0,0,0,.75);">
+                        <i>{% trans "Comment" %}</i>: {{ thread.body }}
+                        <br />
+                    </p>
+                {% endif %}
             {% endfor %}
 
             <p style="color: rgba(0,0,0,.75);">

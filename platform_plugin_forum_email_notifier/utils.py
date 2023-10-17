@@ -1,6 +1,8 @@
 """Utilities for the platform_plugin_forum_email_notifier plugin."""
 from enum import IntEnum
 
+from bs4 import BeautifulSoup
+
 try:
     from openedx.core.djangoapps.django_comment_common.comment_client import settings, utils
 except ImportError:
@@ -8,6 +10,23 @@ except ImportError:
     utils = object
 
 from platform_plugin_forum_email_notifier.models import ForumNotificationPreference, PreferenceOptions
+
+
+def get_simplified_text(text: str) -> str:
+    """
+    Return the simplified text of a html string.
+
+    If the text is longer than 160 characters, it will be truncated.
+
+    Args:
+        text (str): The html string.
+
+    Returns:
+        str: The simplified text.
+    """
+    soup = BeautifulSoup(text, "html.parser")
+    text = soup.get_text()
+    return text if len(text) <= 160 else f"{text[:160]}..."
 
 
 def get_subscribers(thread_id):

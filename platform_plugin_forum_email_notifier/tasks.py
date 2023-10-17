@@ -2,8 +2,8 @@
 import json
 import logging
 
-from bs4 import BeautifulSoup
 from celery import shared_task
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from edx_ace.recipient import Recipient
@@ -24,7 +24,12 @@ from platform_plugin_forum_email_notifier.models import (
     ForumNotificationPreference,
     PreferenceOptions,
 )
-from platform_plugin_forum_email_notifier.utils import ForumObject, get_staff_subscribers, get_subscribers
+from platform_plugin_forum_email_notifier.utils import (
+    ForumObject,
+    get_simplified_text,
+    get_staff_subscribers,
+    get_subscribers,
+)
 
 log = logging.getLogger(__name__)
 celery_log = logging.getLogger("edx.celery.task")
@@ -69,9 +74,6 @@ def send_email_notification(
         log.warning(f"User {subscriber} does not exist")
         return
 
-    soup = BeautifulSoup(body, "html.parser")
-    body = soup.get_text()[:160]
-
     course = get_course_overview_or_none(course_id)
 
     language_preference = get_user_preference(user, LANGUAGE_KEY)
@@ -86,7 +88,7 @@ def send_email_notification(
             "course_name": course.display_name,
             "thread_id": thread_id,
             "discussion": discussion,
-            "body": body,
+            "body": get_simplified_text(body),
             "title": title,
             "url": f"{url}discussions/{course_id}/posts/{post_id}",
             "author_id": author_id,
@@ -269,12 +271,15 @@ def send_digest(
     user = digest.user
 
     threads = json.loads(digest.threads_json)
+
     for thread in threads:
-        soup = BeautifulSoup(thread.get("body"), "html.parser")
-        thread["body"] = soup.get_text()[:160]
+        thread["body"] = get_simplified_text(thread.get("body"))
 
     course = get_course_overview_or_none(digest.course_id)
-    forum_notifier_url = "{course_url}/instructor#view-forum_notifier"
+    lms_root_url = getattr(settings, "LMS_ROOT_URL", None)
+    forum_notifier_url = (
+        f"{lms_root_url}/courses/{digest.course_id}/instructor#view-forum_notifier"
+    )
 
     language_preference = get_user_preference(user, LANGUAGE_KEY)
 

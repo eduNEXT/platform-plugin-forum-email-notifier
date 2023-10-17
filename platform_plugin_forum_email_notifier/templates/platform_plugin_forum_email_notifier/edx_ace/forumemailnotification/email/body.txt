@@ -12,7 +12,7 @@
         {% blocktrans %}User {{ author_username }} commented in a discussion thread that you are following:{% endblocktrans %}
     {% endif %}
 
-    {{ body }}...
+    {{ body }}
 
     {% blocktrans %}To view the discussion thread, click the link below: {{ url }}{% endblocktrans %}
 
