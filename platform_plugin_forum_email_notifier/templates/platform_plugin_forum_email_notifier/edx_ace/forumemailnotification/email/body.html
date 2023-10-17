@@ -20,9 +20,7 @@
                 </p>
 
                 <h3 style="color: rgba(0,0,0,.75);">
-                    {% filter force_escape %}
-                    {{ title }}:
-                    {% endfilter %}
+                    {% autoescape off %}{{ title }}:{% endautoescape %}
                     <br />
                 </h3>
             {% elif object_type == 2 %}
@@ -44,9 +42,7 @@
             {% endif %}
 
             <p style="color: rgba(0,0,0,.75);">
-                {% filter force_escape %}
-                {{ body }}...
-                {% endfilter %}
+                {% autoescape off %}{{ body }}...{% endautoescape %}
                 <br />
             </p>
 
