@@ -137,12 +137,12 @@ Please do not report security issues in public. Please email security@edunext.co
     :target: https://pypi.python.org/pypi/platform_plugin_forum_email_notifier/
     :alt: PyPI
 
-.. |ci-badge| image:: https://github.com/eduNEXT/platform_plugin_forum_email_notifier/workflows/Python%20CI/badge.svg?branch=main
-    :target: https://github.com/eduNEXT/platform_plugin_forum_email_notifier/actions
+.. |ci-badge| image:: https://github.com/eduNEXT/platform-plugin-forum-email-notifier/actions/workflows/ci.yml/badge.svg?branch=main
+    :target: https://github.com/eduNEXT/platform-plugin-forum-email-notifier/actions
     :alt: CI
 
-.. |license-badge| image:: https://img.shields.io/github/license/eduNEXT/platform_plugin_forum_email_notifier.svg
-    :target: https://github.com/eduNEXT/platform_plugin_forum_email_notifier/blob/main/LICENSE.txt
+.. |license-badge| image:: https://img.shields.io/github/license/eduNEXT/platform-plugin-forum-email-notifier.svg
+    :target: https://github.com/eduNEXT/platform-plugin-forum-email-notifier/blob/main/LICENSE.txt
     :alt: License
 
 .. TODO: Choose one of the statuses below and remove the other status-badge lines.
@@ -150,4 +150,3 @@ Please do not report security issues in public. Please email security@edunext.co
 .. |status-badge| image:: https://img.shields.io/badge/Status-Maintained-brightgreen
 .. .. |status-badge| image:: https://img.shields.io/badge/Status-Deprecated-orange
 .. .. |status-badge| image:: https://img.shields.io/badge/Status-Unsupported-red
-
