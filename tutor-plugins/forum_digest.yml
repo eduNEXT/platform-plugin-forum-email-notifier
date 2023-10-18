@@ -9,7 +9,7 @@ name: forum-email-notifier
 patches:
   k8s-deployments: |
     ---
-    # Run daily forum email notifier
+    # Run daily forum email notification
     apiVersion: batch/v1
     kind: CronJob
     metadata:
@@ -74,7 +74,7 @@ patches:
                     - key: uwsgi.ini
                       path: uwsgi.ini
     ---
-    # Run weekly forum email notifier
+    # Run weekly forum email notification
     apiVersion: batch/v1
     kind: CronJob
     metadata:

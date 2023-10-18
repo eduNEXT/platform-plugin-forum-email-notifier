@@ -70,16 +70,16 @@ Every time you develop something in this repo
 Deploying
 =========
 
-The email digest feature works by acumulating the notifications in a database table
-per user, per course and per digest frequency. Then, a scheduled task is run to
+The email digest feature accumulates the notifications in a database table
+per user, per course, and digest frequency. Then, a scheduled task is run to
 send the notifications to the users.
 
-As Open edX doesn't support celery beat for scheduled tasks, so we need to use
+As Open edX doesn't support celery beat for scheduled tasks, we need to use
 another tool to run them.
 
-For tutor local installations we need to use cron to run the scheduled tasks.
+For tutor local installations we need to use `cron <https://en.wikipedia.org/wiki/Cron>` to run the scheduled tasks.
 
-An example of a cron job to run the scheduled tasks once every day at midnight:
+An example of a cron expression to run the scheduled tasks once every day at midnight:
 
 .. code-block::
 
