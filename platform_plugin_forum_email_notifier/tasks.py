@@ -5,11 +5,13 @@ import logging
 from celery import shared_task
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
 from django.utils import timezone
 from edx_ace.recipient import Recipient
 from edx_django_utils.monitoring import set_code_owner_attribute
 
 try:
+    from openedx.core.djangoapps.ace_common.template_context import get_base_template_context
     from openedx.core.djangoapps.content.course_overviews.api import get_course_overview_or_none
     from openedx.core.djangoapps.lang_pref import LANGUAGE_KEY
     from openedx.core.djangoapps.user_api.preferences.api import get_user_preference
@@ -17,6 +19,7 @@ except ImportError:
     get_course_overview_or_none = object
     LANGUAGE_KEY = object
     get_user_preference = object
+    get_base_template_context = object
 
 from platform_plugin_forum_email_notifier.email import send_digest_email_notification, send_forum_email_notification
 from platform_plugin_forum_email_notifier.models import (
@@ -79,10 +82,10 @@ def send_email_notification(
     language_preference = get_user_preference(user, LANGUAGE_KEY)
     post_id = thread_id if title else discussion.get("id")
 
-    send_forum_email_notification(
-        recipient=Recipient(user.id, user.email),
-        language=language_preference,
-        user_context={
+    site = Site.objects.get_current()
+    context = get_base_template_context(site)
+    context.update(
+        {
             "user": user,
             "course_id": course_id,
             "course_name": course.display_name,
@@ -95,7 +98,13 @@ def send_email_notification(
             "author_username": author_username,
             "author_email": author_email,
             "object_type": object_type,
-        },
+        }
+    )
+
+    send_forum_email_notification(
+        recipient=Recipient(user.id, user.email),
+        language=language_preference,
+        user_context=context,
     )
 
 
@@ -276,24 +285,31 @@ def send_digest(
         thread["body"] = get_simplified_text(thread.get("body"))
 
     course = get_course_overview_or_none(digest.course_id)
-    lms_root_url = getattr(settings, "LMS_ROOT_URL", None)
+    lms_url = getattr(settings, "LMS_ROOT_URL", None)
     forum_notifier_url = (
-        f"{lms_root_url}/courses/{digest.course_id}/instructor#view-forum_notifier"
+        f"{lms_url}/courses/{digest.course_id}/instructor#view-forum_notifier"
     )
 
     language_preference = get_user_preference(user, LANGUAGE_KEY)
 
-    send_digest_email_notification(
-        recipient=Recipient(user.id, user.email),
-        language=language_preference,
-        user_context={
+    site = Site.objects.get_current()
+    context = get_base_template_context(site)
+    context.update(
+        {
             "user": user,
             "course_id": digest.course_id,
             "course_name": course.display_name,
             "threads": threads,
             "forum_notifier_url": forum_notifier_url,
-        },
+        }
     )
+
+    send_digest_email_notification(
+        recipient=Recipient(user.id, user.email),
+        language=language_preference,
+        user_context=context,
+    )
+
     digest.last_sent = timezone.now()
     digest.threads_json = "[]"
     digest.save()
