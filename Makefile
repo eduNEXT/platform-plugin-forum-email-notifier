@@ -93,11 +93,11 @@ selfcheck: ## check that the Makefile is well-formed
 
 extract_translations: ## extract strings to be translated, outputting .mo files
 	rm -rf docs/_build
-	cd platform_plugin_forum_email_notifier && ../manage.py makemessages -l en -v1 -d django
-	cd platform_plugin_forum_email_notifier && ../manage.py makemessages -l en -v1 -d djangojs
+	cd platform_plugin_forum_email_notifier && python ../manage.py makemessages -l en -v1 -d django
+	cd platform_plugin_forum_email_notifier && python ../manage.py makemessages -l en -v1 -d djangojs
 
 compile_translations: ## compile translation files, outputting .po files for each supported language
-	cd platform_plugin_forum_email_notifier && ../manage.py compilemessages
+	cd platform_plugin_forum_email_notifier && python ../manage.py compilemessages
 
 detect_changed_source_translations:
 	cd platform_plugin_forum_email_notifier && i18n_tool changed

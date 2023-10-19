@@ -1,0 +1,206 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# Translators:
+# Bryann Valderrama <bryann.valderrama@edunext.co>, 2023
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-19 15:42-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Bryann Valderrama <bryann.valderrama@edunext.co>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: models.py:18
+msgid "None"
+msgstr "Ninguno"
+
+#: models.py:19
+msgid "All posts"
+msgstr "Todas las publicaciones"
+
+#: models.py:20
+msgid "Only posts I'm following"
+msgstr "Sólo las publicaciones que estoy siguiendo"
+
+#: models.py:21
+msgid "All posts. (Daily digest)"
+msgstr "Todas las publicaciones. (Resumen diario)"
+
+#: models.py:22
+msgid "All posts. (Weekly digest)"
+msgstr "Todas los publicaciones. (Resumen semanal)"
+
+#: static/html/forum_notifier.html:5
+msgid ""
+"In this section you can set your email notification preferences for the "
+"discussion forum. The available options are:"
+msgstr ""
+"En esta sección puede establecer sus preferencias de notificación por "
+"correo electrónico para el foro de discusión. Las opciones disponibles son:"
+
+#: static/html/forum_notifier.html:7
+msgid "None: I don't want to receive any email notifications."
+msgstr "Ninguno: No quiero recibir ninguna notificación por correo electrónico."
+
+#: static/html/forum_notifier.html:8
+msgid "All posts: I want to receive email notifications for all posts."
+msgstr
+"Todos las publicaciones: Quiero recibir notificaciones por correo electrónico "
+"para todas las publicaciones."
+
+#: static/html/forum_notifier.html:10
+msgid ""
+"Only posts I'm following: I want to receive email notifications for posts "
+"I'm following."
+msgstr ""
+"Sólo las publicaciones que estoy siguiendo: Quiero recibir notificaciones por "
+"correo electrónico para las publicaciones que estoy siguiendo."
+
+#: static/html/forum_notifier.html:13
+msgid ""
+"All posts (Daily digest): I want to receive email notifications for all "
+"posts in a daily digest."
+msgstr ""
+"Todas las publicaciones (Resumen diario): Quiero recibir notificaciones por "
+"correo electrónico para todas las publicaciones en un resumen diario."
+
+#: static/html/forum_notifier.html:16
+msgid ""
+"All posts (Weekly digest): I want to receive email notifications for all "
+"posts in a weekly digest."
+msgstr ""
+"Todas las publicaciones (Resumen semanal): Quiero recibir notificaciones por "
+"correo electrónico para todas las publicaciones en un resumen semanal."
+
+#: static/html/forum_notifier.html:21
+msgid "These notifications are only sent to the instructor of the course."
+msgstr "Estas notificaciones sólo se envían al instructor del curso."
+
+#: static/html/forum_notifier.html:22
+msgid ""
+"The available notifications of the discussion forum are: created post, "
+"response to post, comment to post. These notifications are sent to the email "
+"address associated with your account. Below you can select the type of "
+"notifications you want to receive:"
+msgstr ""
+"Las notificaciones disponibles del foro de discusión son: publicación "
+"creada, respuesta a la publicación, comentario a la publicación. Estas "
+"notificaciones se envían a la dirección de correo electrónico asociada a su "
+"cuenta. A continuación puede seleccionar el tipo de notificaciones que desea "
+"recibir:"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/body.html:11
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/body.txt:4
+msgid "Summary of Discussion Activity"
+msgstr "Resumen de la actividad de discusión"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/body.html:22
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/body.txt:13
+msgid "Response"
+msgstr "Respuesta"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/body.html:27
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/body.txt:11
+msgid "Comment"
+msgstr "Comentario"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/body.html:36
+msgid ""
+"You are receiving this email because you set your preferences to receive a "
+"summary of all discussion activity. To stop receiving this email, please "
+"change your settings"
+msgstr ""
+"Está recibiendo este correo electrónico porque estableció sus preferencias "
+"para recibir un resumen de toda la actividad de discusión. Para dejar de "
+"recibir este correo electrónico, cambie su configuración"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/body.html:37
+msgid "here"
+msgstr "aquí"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/body.txt:9
+msgid "To view the thread, click the link below: "
+msgstr "Para ver el hilo, haga clic en el siguiente enlace:"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/body.txt:17
+#, python-format
+msgid ""
+"You are receiving this email because you set your preferences to receive a "
+"summary of all discussion activity. To stop receiving this email, please "
+"change your settings in the following link: %(forum_notifier_url)s"
+msgstr ""
+"Está recibiendo este correo electrónico porque estableció sus preferencias "
+"para recibir un resumen de toda la actividad de discusión. Para dejar de "
+"recibir este correo electrónico, cambie su configuración en el siguiente "
+"enlace: %(forum_notifier_url)s"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/digestemailnotification/email/subject.txt:3
+#, python-format
+msgid "Summary of discussion activity in %(course_name)s"
+msgstr "Resumen de la actividad de discusión en %(course_name)s"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.html:10
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.txt:4
+msgid "Discussion Activity"
+msgstr "Actividad de Discusión"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.html:17
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.txt:7
+#, python-format
+msgid "User %(author_username)s created a discussion thread:"
+msgstr "El usuario %(author_username)s creó un hilo de discusión:"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.html:30
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.txt:10
+#, python-format
+msgid ""
+"User %(author_username)s responded to a comment in a discussion thread that "
+"you are following:"
+msgstr ""
+"El usuario %(author_username)s respondió a un comentario en un hilo de "
+"discusión que está siguiendo:"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.html:38
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.txt:12
+#, python-format
+msgid ""
+"User %(author_username)s commented in a discussion thread that you are "
+"following:"
+msgstr ""
+"El usuario %(author_username)s comentó en un hilo de discusión que está "
+"siguiendo:"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.html:50
+msgid "View in discussions"
+msgstr "Ver en discusiones"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.html:57
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.txt:19
+msgid ""
+"You are receiving this email because you are following this thread in the "
+"discussions panel of the course. Click the star sign from the thread to stop "
+"following."
+msgstr ""
+"Está recibiendo este correo electrónico porque está siguiendo este hilo en "
+"el panel de discusiones del curso. Haga clic en el signo de estrella del "
+"hilo para dejar de seguirlo."
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.txt:17
+#, python-format
+msgid "To view the discussion thread, click the link below: %(url)s"
+msgstr "Para ver el hilo de discusión, haga clic en el siguiente enlace: %(url)s"
+
+#: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/subject.txt:3
+#, python-format
+msgid "New discussion activity in %(course_name)s"
+msgstr "Nueva actividad de discusión en %(course_name)s"
