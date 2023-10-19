@@ -1,26 +1,16 @@
-platform_plugin_forum_email_notifier
+Forum Email Notifier
 ####################################
 
-.. note::
 
-  This README was auto-generated. Maintainer: please review its contents and
-  update all relevant sections. Instructions to you are marked with
-  "PLACEHOLDER" or "TODO". Update or remove those sections, and remove this
-  note when you are done.
-
-|pypi-badge| |ci-badge| |codecov-badge| |doc-badge| |pyversions-badge|
-|license-badge| |status-badge|
+|ci-badge| |license-badge| |status-badge|
 
 Purpose
 *******
 
-One-line description for README and other doc files.
+This is a plugin for the Open edX platform that sends email notifications to
+users when there are forum updates.
 
-TODO: The ``README.rst`` file should start with a brief description of the repository and its purpose.
-It should be described in the context of other repositories under the ``openedx``
-organization. It should make clear where this fits in to the overall Open edX
-codebase and should be oriented towards people who are new to the Open edX
-project.
+This plugin allows to configure notification digest frequency.
 
 Getting Started
 ***************
@@ -80,45 +70,25 @@ Every time you develop something in this repo
 Deploying
 =========
 
-TODO: How can a new user go about deploying this component? Is it just a few
-commands? Is there a larger how-to that should be linked here?
+The email digest feature accumulates the notifications in a database table
+per user, per course, and digest frequency. Then, a scheduled task is run to
+send the notifications to the users.
 
-PLACEHOLDER: For details on how to deploy this component, see the `deployment how-to`_
+As Open edX doesn't support celery beat for scheduled tasks, we need to use
+another tool to run them.
 
-.. _deployment how-to: https://docs.openedx.org/projects/platform_plugin_forum_email_notifier/how-tos/how-to-deploy-this-component.html
+For tutor local installations we need to use `cron <https://en.wikipedia.org/wiki/Cron>` to run the scheduled tasks.
 
-Getting Help
-************
+An example of a cron expression to run the scheduled tasks once every day at midnight:
 
-Documentation
-=============
+.. code-block::
 
-PLACEHOLDER: Start by going through `the documentation`_.  If you need more help see below.
+  0 0 * * * /bin/bash -l -c 'tutor local exec lms ./manage.py lms forum_digest --digest daily'
 
-.. _the documentation: https://docs.openedx.org/projects/platform_plugin_forum_email_notifier
-
-(TODO: `Set up documentation <https://openedx.atlassian.net/wiki/spaces/DOC/pages/21627535/Publish+Documentation+on+Read+the+Docs>`_)
-
-More Help
-=========
-
-If you're having trouble, we have discussion forums at
-https://discuss.openedx.org where you can connect with others in the
-community.
-
-Our real-time conversations are on Slack. You can request a `Slack
-invitation`_, then join our `community Slack workspace`_.
-
-For anything non-trivial, the best path is to open an issue in this
-repository with as many details about the issue you are facing as you
-can provide.
-
-https://github.com/eduNEXT/platform_plugin_forum_email_notifier/issues
-
-For more information about these options, see the `Getting Help <https://openedx.org/getting-help>`__ page.
-
-.. _Slack invitation: https://openedx.org/slack
-.. _community Slack workspace: https://openedx.slack.com/
+For tutor k8s installations we need to use a cronjob to run the scheduled tasks. The default
+cronjob is configured to run the scheduled tasks once every day at midnight and can be found
+in the folder ``tutor-plugins``. It's compatible with the Open edX release ``olive`` and
+can be modified to work with other later releases.
 
 License
 *******
@@ -160,34 +130,23 @@ file in this repo.
 Reporting Security Issues
 *************************
 
-Please do not report security issues in public. Please email security@openedx.org.
+Please do not report security issues in public. Please email security@edunext.co.
 
-.. |pypi-badge| image:: https://img.shields.io/pypi/v/platform_plugin_forum_email_notifier.svg
+.. It's not required by our contractor at the moment but can be published later
+.. .. |pypi-badge| image:: https://img.shields.io/pypi/v/platform_plugin_forum_email_notifier.svg
     :target: https://pypi.python.org/pypi/platform_plugin_forum_email_notifier/
     :alt: PyPI
 
-.. |ci-badge| image:: https://github.com/eduNEXT/platform_plugin_forum_email_notifier/workflows/Python%20CI/badge.svg?branch=main
-    :target: https://github.com/eduNEXT/platform_plugin_forum_email_notifier/actions
+.. |ci-badge| image:: https://github.com/eduNEXT/platform-plugin-forum-email-notifier/actions/workflows/ci.yml/badge.svg?branch=main
+    :target: https://github.com/eduNEXT/platform-plugin-forum-email-notifier/actions
     :alt: CI
 
-.. |codecov-badge| image:: https://codecov.io/github/eduNEXT/platform_plugin_forum_email_notifier/coverage.svg?branch=main
-    :target: https://codecov.io/github/eduNEXT/platform_plugin_forum_email_notifier?branch=main
-    :alt: Codecov
-
-.. |doc-badge| image:: https://readthedocs.org/projects/platform_plugin_forum_email_notifier/badge/?version=latest
-    :target: https://docs.openedx.org/projects/platform_plugin_forum_email_notifier
-    :alt: Documentation
-
-.. |pyversions-badge| image:: https://img.shields.io/pypi/pyversions/platform_plugin_forum_email_notifier.svg
-    :target: https://pypi.python.org/pypi/platform_plugin_forum_email_notifier/
-    :alt: Supported Python versions
-
-.. |license-badge| image:: https://img.shields.io/github/license/eduNEXT/platform_plugin_forum_email_notifier.svg
-    :target: https://github.com/eduNEXT/platform_plugin_forum_email_notifier/blob/main/LICENSE.txt
+.. |license-badge| image:: https://img.shields.io/github/license/eduNEXT/platform-plugin-forum-email-notifier.svg
+    :target: https://github.com/eduNEXT/platform-plugin-forum-email-notifier/blob/main/LICENSE.txt
     :alt: License
 
 .. TODO: Choose one of the statuses below and remove the other status-badge lines.
-.. |status-badge| image:: https://img.shields.io/badge/Status-Experimental-yellow
-.. .. |status-badge| image:: https://img.shields.io/badge/Status-Maintained-brightgreen
+.. .. |status-badge| image:: https://img.shields.io/badge/Status-Experimental-yellow
+.. |status-badge| image:: https://img.shields.io/badge/Status-Maintained-brightgreen
 .. .. |status-badge| image:: https://img.shields.io/badge/Status-Deprecated-orange
 .. .. |status-badge| image:: https://img.shields.io/badge/Status-Unsupported-red
