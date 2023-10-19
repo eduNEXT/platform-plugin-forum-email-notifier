@@ -5,13 +5,11 @@ import logging
 from celery import shared_task
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.sites.models import Site
 from django.utils import timezone
 from edx_ace.recipient import Recipient
 from edx_django_utils.monitoring import set_code_owner_attribute
 
 try:
-    from openedx.core.djangoapps.ace_common.template_context import get_base_template_context
     from openedx.core.djangoapps.content.course_overviews.api import get_course_overview_or_none
     from openedx.core.djangoapps.lang_pref import LANGUAGE_KEY
     from openedx.core.djangoapps.user_api.preferences.api import get_user_preference
@@ -19,7 +17,6 @@ except ImportError:
     get_course_overview_or_none = object
     LANGUAGE_KEY = object
     get_user_preference = object
-    get_base_template_context = object
 
 from platform_plugin_forum_email_notifier.email import send_digest_email_notification, send_forum_email_notification
 from platform_plugin_forum_email_notifier.models import (
@@ -54,6 +51,7 @@ def send_email_notification(
     author_email,
     object_type,
     subscriber,
+    context,
 ):
     """
     Send a email notification to a subscriber user for forum updates.
@@ -70,6 +68,7 @@ def send_email_notification(
         author_email (str): The author email.
         object_type (str): The forum object type.
         subscriber (id): The subscriber id.
+        context (dict): The context for the email.
     """
     try:
         user = User.objects.get(id=subscriber)
@@ -82,8 +81,6 @@ def send_email_notification(
     language_preference = get_user_preference(user, LANGUAGE_KEY)
     post_id = thread_id if title else discussion.get("id")
 
-    site = Site.objects.get_current()
-    context = get_base_template_context(site)
     context.update(
         {
             "user": user,
@@ -121,6 +118,7 @@ def notify_users(
     author_username,
     author_email,
     object_type,
+    context,
 ):
     """
     Get the subscribers for a thread and notify them.
@@ -136,6 +134,7 @@ def notify_users(
         author_username (str): The author username.
         author_email (str): The author email.
         object_type (str): The forum object type.
+        context (dict): The context for the email.
     """
     if object_type == ForumObject.THREAD:
         subscribers = get_subscribers(thread_id)
@@ -183,6 +182,7 @@ def notify_users(
             author_email,
             object_type,
             subscriber,
+            context,
         )
 
     handle_digests.delay(
@@ -269,12 +269,14 @@ def handle_digests(
 @set_code_owner_attribute
 def send_digest(
     digest_id,
+    context,
 ):
     """
     Send the acumulated digest to the user.
 
     Arguments:
         digest_id (str): The digest id.
+        context (dict): The context for the email.
     """
     digest = ForumNotificationDigest.objects.get(id=digest_id)
     user = digest.user
@@ -292,8 +294,6 @@ def send_digest(
 
     language_preference = get_user_preference(user, LANGUAGE_KEY)
 
-    site = Site.objects.get_current()
-    context = get_base_template_context(site)
     context.update(
         {
             "user": user,

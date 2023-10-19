@@ -2,14 +2,42 @@
 from enum import IntEnum
 
 from bs4 import BeautifulSoup
+from django.contrib.sites.models import Site
 
 try:
+    from openedx.core.djangoapps.ace_common.template_context import get_base_template_context
     from openedx.core.djangoapps.django_comment_common.comment_client import settings, utils
 except ImportError:
     settings = object
     utils = object
+    get_base_template_context = object
 
 from platform_plugin_forum_email_notifier.models import ForumNotificationPreference, PreferenceOptions
+
+
+def get_base_email_context() -> dict:
+    """
+    Return the base email context.
+
+    Returns:
+        dict: The base email context.
+    """
+    site = Site.objects.get_current()
+    return get_base_template_context(site)
+
+
+def truncate_text(text: str, max_length=160, suffix="..."):
+    """
+    Return a truncated version of the text.
+
+    Args:
+        text (str): The text to truncate.
+        max_length (int, optional): The maximum length of the text. Defaults to 160.
+        suffix (str, optional): The suffix to append to the truncated text. Defaults to "...".
+    """
+    if len(text) <= max_length:
+        return text
+    return f"{text[:max_length]}{suffix}"
 
 
 def get_simplified_text(text: str) -> str:
@@ -26,7 +54,7 @@ def get_simplified_text(text: str) -> str:
     """
     soup = BeautifulSoup(text, "html.parser")
     text = soup.get_text()
-    return text if len(text) <= 160 else f"{text[:160]}..."
+    return truncate_text(text)
 
 
 def get_subscribers(thread_id):
