@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 15:41-0500\n"
+"POT-Creation-Date: 2023-10-20 16:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bryann Valderrama <bryann.valderrama@edunext.co>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: extensions/filters.py:60
+msgid "Forum Notifications"
+msgstr "Notificaciones del foro"
 
 #: models.py:18
 msgid "None"
@@ -45,26 +49,27 @@ msgid ""
 "In this section you can set your email notification preferences for the "
 "discussion forum. The available options are:"
 msgstr ""
-"En esta sección puede establecer sus preferencias de notificación por "
-"correo electrónico para el foro de discusión. Las opciones disponibles son:"
+"En esta sección puede establecer sus preferencias de notificación por correo "
+"electrónico para el foro de discusión. Las opciones disponibles son:"
 
 #: static/html/forum_notifier.html:7
 msgid "None: I don't want to receive any email notifications."
-msgstr "Ninguno: No quiero recibir ninguna notificación por correo electrónico."
+msgstr ""
+"Ninguno: No quiero recibir ninguna notificación por correo electrónico."
 
 #: static/html/forum_notifier.html:8
 msgid "All posts: I want to receive email notifications for all posts."
-msgstr
-"Todos las publicaciones: Quiero recibir notificaciones por correo electrónico "
-"para todas las publicaciones."
+msgstr ""
+"Todos las publicaciones: Quiero recibir notificaciones por correo "
+"electrónico para todas las publicaciones."
 
 #: static/html/forum_notifier.html:10
 msgid ""
 "Only posts I'm following: I want to receive email notifications for posts "
 "I'm following."
 msgstr ""
-"Sólo las publicaciones que estoy siguiendo: Quiero recibir notificaciones por "
-"correo electrónico para las publicaciones que estoy siguiendo."
+"Sólo las publicaciones que estoy siguiendo: Quiero recibir notificaciones "
+"por correo electrónico para las publicaciones que estoy siguiendo."
 
 #: static/html/forum_notifier.html:13
 msgid ""
@@ -198,7 +203,8 @@ msgstr ""
 #: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/body.txt:17
 #, python-format
 msgid "To view the discussion thread, click the link below: %(url)s"
-msgstr "Para ver el hilo de discusión, haga clic en el siguiente enlace: %(url)s"
+msgstr ""
+"Para ver el hilo de discusión, haga clic en el siguiente enlace: %(url)s"
 
 #: templates/platform_plugin_forum_email_notifier/edx_ace/forumemailnotification/email/subject.txt:3
 #, python-format

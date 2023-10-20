@@ -5,6 +5,7 @@ import pkg_resources
 from crum import get_current_request
 from django.conf import settings
 from django.template import Context, Template
+from django.utils.translation import gettext as _
 from openedx_filters import PipelineStep
 from web_fragments.fragment import Fragment
 
@@ -56,7 +57,7 @@ class AddInstructorNotifierTab(PipelineStep):
         section_data = {
             "fragment": frag,
             "section_key": BLOCK_CATEGORY,
-            "section_display_name": "Forum Notifications",
+            "section_display_name": _("Forum Notifications"),
             "course_id": str(course.id),
             "template_path_prefix": TEMPLATE_ABSOLUTE_PATH,
         }
