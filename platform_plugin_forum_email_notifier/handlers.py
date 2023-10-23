@@ -7,7 +7,7 @@ from openedx_events.learning.signals import (
 )
 
 from platform_plugin_forum_email_notifier.tasks import notify_users
-from platform_plugin_forum_email_notifier.utils import ForumObject
+from platform_plugin_forum_email_notifier.utils import ForumObject, get_base_email_context
 
 
 @receiver(FORUM_THREAD_CREATED)
@@ -28,6 +28,7 @@ def forum_thread_created_handler(
         thread.user.pii.username,
         thread.user.pii.email,
         object_type=ForumObject.THREAD,
+        context=get_base_email_context(),
     )
 
 
@@ -49,6 +50,7 @@ def forum_response_created_handler(
         thread.user.pii.username,
         thread.user.pii.email,
         object_type=ForumObject.RESPONSE,
+        context=get_base_email_context(),
     )
 
 
@@ -70,4 +72,5 @@ def forum_comment_created_handler(
         thread.user.pii.username,
         thread.user.pii.email,
         object_type=ForumObject.COMMENT,
+        context=get_base_email_context(),
     )

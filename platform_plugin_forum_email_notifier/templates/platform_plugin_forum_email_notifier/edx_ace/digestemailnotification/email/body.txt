@@ -1,6 +1,18 @@
-{% load i18n %}{% autoescape off %}
-{% blocktrans %}We received a request to change the e-mail associated with your {{ platform_name }} account from {{ old_email }} to {{ new_email }}. If this is correct, please confirm your new e-mail address by visiting:{% endblocktrans %}
+{% load i18n %}
 
-{{ confirm_link }}
+{% autoescape off %}
+    {% blocktrans %}Summary of Discussion Activity{% endblocktrans %}
 
-{% blocktrans %}If you didn't request this, you don't need to do anything; you won't receive any more email from us. Please do not reply to this e-mail; if you require assistance, check the help section of the {{ platform_name }} web site.{% endblocktrans %}{% endautoescape %}
+    {% for thread in threads %}
+        {% if object_type == 1 %}
+            {{ thread.title}}: {{ thread.body }}
+            {% blocktrans %}To view the thread, click the link below: {% endblocktrans %}{{ thread.url }}discussions/{{ course_id }}/posts/{{ thread.thread_id }}
+        {% elif object_type == 2 %}
+            {% trans "Comment" %}: {{ thread.body }}
+        {% else %}
+            {% trans "Response" %}: {{ thread.body }}
+        {% endif %}
+    {% endfor %}
+
+    {% blocktrans %}You are receiving this email because you set your preferences to receive a summary of all discussion activity. To stop receiving this email, please change your settings in the following link: {{ forum_notifier_url }}{% endblocktrans %}
+{% endautoescape %}

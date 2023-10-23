@@ -8,6 +8,7 @@ from django.utils import timezone
 
 from platform_plugin_forum_email_notifier.models import ForumNotificationDigest, PreferenceOptions
 from platform_plugin_forum_email_notifier.tasks import send_digest
+from platform_plugin_forum_email_notifier.utils import get_base_email_context
 
 log = logging.getLogger(__name__)
 
@@ -73,4 +74,4 @@ class Command(BaseCommand):
                 f"Generating {display_name} digest for user {digest.user.id} in course {digest.course_id}"
             )
 
-            send_digest.delay(digest.id)
+            send_digest.delay(digest.id, context=get_base_email_context())

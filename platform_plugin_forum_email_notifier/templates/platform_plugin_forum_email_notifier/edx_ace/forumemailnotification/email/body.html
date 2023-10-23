@@ -7,27 +7,57 @@
     <tr>
         <td>
             <h1>
-                {% trans "Forum Activity" as tmsg %}{{ tmsg | force_escape }}
+                {% trans "Discussion Activity" as tmsg %}{{ tmsg | force_escape }}
             </h1>
+
+            {% if object_type == 1 %}
+                <p style="color: rgba(0,0,0,.75);">
+                    {% autoescape off %}
+                    {# xss-lint: disable=django-blocktrans-missing-escape-filter #}
+                    {% blocktrans %}User {{ author_username }} created a discussion thread:{% endblocktrans %}
+                    {% endautoescape %}
+                    <br />
+                </p>
+
+                <h3 style="color: rgba(0,0,0,.75);">
+                    {% autoescape off %}{{ title }}:{% endautoescape %}
+                    <br />
+                </h3>
+            {% elif object_type == 2 %}
+                <p style="color: rgba(0,0,0,.75);">
+                    {% autoescape off %}
+                    {# xss-lint: disable=django-blocktrans-missing-escape-filter #}
+                    {% blocktrans %}User {{ author_username }} responded to a comment in a discussion thread that you are following:{% endblocktrans %}
+                    {% endautoescape %}
+                    <br />
+                </p>
+            {% else %}
+                <p style="color: rgba(0,0,0,.75);">
+                    {% autoescape off %}
+                    {# xss-lint: disable=django-blocktrans-missing-escape-filter #}
+                    {% blocktrans %}User {{ author_username }} commented in a discussion thread that you are following:{% endblocktrans %}
+                    {% endautoescape %}
+                    <br />
+                </p>
+            {% endif %}
+
             <p style="color: rgba(0,0,0,.75);">
-                {% filter force_escape %}
-                {% blocktrans %}Activity in the discussion:{% endblocktrans %}
-                {% endfilter %}
+                {% autoescape off %}{{ body }}{% endautoescape %}
                 <br />
             </p>
 
             {% filter force_escape %}
-                {% blocktrans asvar course_cta_text %}Visit discussions{% endblocktrans %}
+                {% blocktrans asvar course_cta_text %}View in discussions{% endblocktrans %}
             {% endfilter %}
-            {% include "ace_common/edx_ace/common/return_to_course_cta.html" with course_cta_text=course_cta_text course_cta_url=confirm_link %}
+            {% include "ace_common/edx_ace/common/return_to_course_cta.html" with course_cta_text=course_cta_text reset_url=url %}
 
             <p style="color: rgba(0,0,0,.75);">
-                {% filter force_escape %}
-                {% blocktrans %}.{% endblocktrans %}
-                {% endfilter %}
+                {% autoescape off %}
+                {# xss-lint: disable=django-blocktrans-missing-escape-filter #}
+                {% blocktrans %}You are receiving this email because you are following this thread in the discussions panel of the course. Click the star sign from the thread to stop following.{% endblocktrans %}
+                {% endautoescape %}
                 <br />
             </p>
-
         </td>
     </tr>
 </table>
