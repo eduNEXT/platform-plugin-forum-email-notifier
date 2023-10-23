@@ -16,6 +16,17 @@ Unreleased
 
 *
 
+0.3.0 - 2023-10-23
+**********************************************
+
+Added
+=====
+* Added templates of individual and digest emails.
+* Added README with cron and cronjob information.
+* Added documentation in instructor dashboard.
+* Added translation support with Spanish translation (es_ES) and (es_419).
+
+
 0.2.0 - 2023-10-09
 **********************************************
 
@@ -25,7 +36,8 @@ Added
 * Added instructor dashboard integration.
 * Added ``forum_digest`` command to trigger digest notification.
 
-0.1.0 – 2023-09-28
+
+0.1.0 - 2023-09-28
 **********************************************
 
 Added
