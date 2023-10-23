@@ -24,9 +24,9 @@
     <select class="dropdown email-notifications-select">
         {% for value, text in options %}
             {% if value == current_preference %}
-                <option class="email-notifications-options" value="{{value}}" selected>{{ text }}</option>
+                <option class="email-notifications-options" value="{{value}}" selected>{% trans text %}</option>
             {% else %}
-                <option class="email-notifications-options" value="{{value}}">{{ text }}</option>
+                <option class="email-notifications-options" value="{{value}}">{% trans text %}</option>
             {% endif %}
         {% endfor %}
     </select>
