@@ -3,5 +3,5 @@ include LICENSE.txt
 include README.rst
 include requirements/base.in
 include requirements/constraints.txt
-include platform_plugin_forum_email_notifier/locale
+recursive-include platform_plugin_forum_email_notifier/locale *
 recursive-include platform_plugin_forum_email_notifier *.html *.png *.gif *.js *.css *.jpg *.jpeg *.svg *.txt
