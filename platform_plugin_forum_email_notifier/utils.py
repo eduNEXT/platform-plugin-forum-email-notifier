@@ -6,10 +6,10 @@ from django.contrib.sites.models import Site
 
 try:
     from openedx.core.djangoapps.ace_common.template_context import get_base_template_context
-    from openedx.core.djangoapps.django_comment_common.comment_client import settings, utils
+    from openedx.core.djangoapps.django_comment_common.comment_client import settings, utils as comment_client_utils
 except ImportError:
     settings = object
-    utils = object
+    comment_client_utils = object
     get_base_template_context = object
 
 from platform_plugin_forum_email_notifier.models import ForumNotificationPreference, PreferenceOptions
@@ -66,7 +66,7 @@ def get_subscribers(thread_id):
     while page < num_pages:
         url = _url_for_thread_subscriptions(thread_id)
         params = {"page": page}
-        response = utils.perform_request("get", url, params)
+        response = comment_client_utils.perform_request("get", url, params)
 
         for subscription in response["collection"]:
             subscribers.add(int(subscription["subscriber_id"]))
