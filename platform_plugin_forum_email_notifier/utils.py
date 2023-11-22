@@ -6,7 +6,8 @@ from django.contrib.sites.models import Site
 
 try:
     from openedx.core.djangoapps.ace_common.template_context import get_base_template_context
-    from openedx.core.djangoapps.django_comment_common.comment_client import settings, utils as comment_client_utils
+    from openedx.core.djangoapps.django_comment_common.comment_client import settings
+    from openedx.core.djangoapps.django_comment_common.comment_client import utils as comment_client_utils
 except ImportError:
     settings = object
     comment_client_utils = object

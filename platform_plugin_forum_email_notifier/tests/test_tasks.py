@@ -1,3 +1,4 @@
+""" Unit tests for celery tasks in `platform_plugin_forum_email_notifier` plugin."""
 import json
 from unittest import TestCase
 from unittest.mock import Mock, patch
@@ -26,6 +27,8 @@ module_path = "platform_plugin_forum_email_notifier.tasks"
 
 
 class TestSendEmailNotification(TestCase):
+    """Unit test for `send_email_notification` task."""
+
     get_mock = patch(f"{module_path}.User.objects.get")
     get_course_overview_or_none_mock = patch(
         f"{module_path}.get_course_overview_or_none"
@@ -36,6 +39,9 @@ class TestSendEmailNotification(TestCase):
     )
 
     def setUp(self) -> None:
+        """
+        Set up common test data for each test case.
+        """
         self.send_email_notification_args = {
             "thread_id": "test-thread-id",
             "discussion": None,
@@ -62,6 +68,12 @@ class TestSendEmailNotification(TestCase):
         mock_get_course_overview_or_none: Mock,
         mock_get: Mock,
     ):
+        """
+        Check `send_email_notification` when user exists.
+
+        Expected result:
+            - Send an email notification when user exists.
+        """
         mock_user = Mock(spec=User, id=1, email="test@user-email.com")
         mock_get.return_value = mock_user
         mock_get_course_overview_or_none.return_value = Mock()
@@ -90,6 +102,12 @@ class TestSendEmailNotification(TestCase):
 
     @get_mock
     def test_send_email_notification_user_does_not_exist(self, mock_get: Mock):
+        """
+        Check `send_email_notification` when user does not exist.
+
+        Expected result:
+            - Raise `ObjectDoesNotExist` exception when user does not exist.
+        """
         mock_get.side_effect = ObjectDoesNotExist
 
         with self.assertRaises(ObjectDoesNotExist):
@@ -100,6 +118,12 @@ class TestSendEmailNotification(TestCase):
     def test_send_email_notification_course_does_not_exist(
         self, mock_get_course_overview_or_none: Mock, mock_get: Mock
     ):
+        """
+        Check `send_email_notification` when course does not exist.
+
+        Expected result:
+            - Raise `Exception` exception when course does not exist.
+        """
         mock_get.return_value = Mock(spec=User, id=1, email="test@user-email.com")
         mock_get_course_overview_or_none.return_value = None
 
@@ -117,6 +141,12 @@ class TestSendEmailNotification(TestCase):
         mock_get_course_overview_or_none: Mock,
         mock_get: Mock,
     ):
+        """
+        Check `send_email_notification` when post has title.
+
+        Expected result:
+            - The title of the post is used in the email notification.
+        """
         mock_user = Mock(spec=User, id=1, email="test@user-email.com")
         mock_get.return_value = mock_user
         mock_get_course_overview_or_none.return_value = Mock()
@@ -154,6 +184,13 @@ class TestSendEmailNotification(TestCase):
         mock_get_course_overview_or_none: Mock,
         mock_get: Mock,
     ):
+        """
+        Check `send_email_notification` when post does not have title.
+
+        Expected result:
+            - The title of the post is not used in the email notification.
+            - The id of the discussion is used instead.
+        """
         mock_user = Mock(spec=User, id=1, email="test@user-email.com")
         mock_get.return_value = mock_user
         mock_get_course_overview_or_none.return_value = Mock()
@@ -185,6 +222,9 @@ class TestSendEmailNotification(TestCase):
 
 @ddt
 class TestNotifyUsers(TestCase):
+    """
+    Unit test for `notify_users` task."""
+
     get_user_mock = patch(f"{module_path}.User.objects.get")
     get_forum_mock = patch(f"{module_path}.ForumNotificationPreference.objects.get")
     get_staff_subscribers_mock = patch(f"{module_path}.get_staff_subscribers")
@@ -207,6 +247,13 @@ class TestNotifyUsers(TestCase):
         mock_get_forum_notification_preference: Mock,
         mock_get_user: Mock,
     ):
+        """
+        Check `notify_users` task for thread.
+
+        Expected result:
+            - Send an email notification to all subscribers.
+            - A digest is created for all staff subscribers.
+        """
         mock_get_subscribers.return_value = set([1])
         mock_get_staff_subscribers.return_value = set([2])
         mock_get_user.return_value = Mock(spec=User, id=1, email="test@user-email.com")
@@ -232,6 +279,12 @@ class TestNotifyUsers(TestCase):
         mock_handle_digests.assert_called()
 
     def test_notify_users_invalid_object_type(self):
+        """
+        Check `notify_users` task for invalid object type.
+
+        Expected result:
+            - Raise `ValueError` exception.
+        """
         with self.assertRaises(ValueError):
             notify_users(
                 thread_id="test-thread_id",
@@ -260,6 +313,12 @@ class TestNotifyUsers(TestCase):
         mock_get_staff_subscribers: Mock,
         mock_get_user: Mock,
     ):
+        """
+        Check `notify_users` task when user does not exist.
+
+        Expected result:
+            - The `send_email_notification` task is not called.
+        """
         mock_get_subscribers.return_value = set()
         mock_get_staff_subscribers.return_value = set([1])
         mock_get_user.side_effect = User.DoesNotExist
@@ -302,6 +361,14 @@ class TestNotifyUsers(TestCase):
         mock_get_forum_notification_preference: Mock,
         mock_get_user: Mock,
     ):
+        """
+        Check `notify_users` task for different user preference options.
+        when preference_option is NONE, ALL_POSTS_DAILY_DIGEST or ALL_POSTS_WEEKLY_DIGEST, the
+        user should not be notified.
+
+        Expected result:
+            - The `send_email_notification` task is not called.
+        """
         mock_get_subscribers.return_value = set([])
         mock_get_staff_subscribers.return_value = set([1])
         mock_get_user.return_value = Mock(spec=User, id=1, email="test@user-email.com")
@@ -329,6 +396,8 @@ class TestNotifyUsers(TestCase):
 
 
 class TestHandleDigests(TestCase):
+    """Test case for `handle_digests` task."""
+
     def setUp(self):
         self.handle_digest_args = {
             "thread_id": "test-thread-id",
@@ -350,6 +419,12 @@ class TestHandleDigests(TestCase):
         mock_get_or_create: Mock,
         mock_filter: Mock,
     ):
+        """
+        Test `handle_digests` task.
+
+        Expected result:
+            - A digest is created for each user with a digest preference.
+        """
         user_mock = Mock()
         preference_mock = Mock()
         preference_mock.user = user_mock
@@ -379,11 +454,19 @@ class TestHandleDigests(TestCase):
 
 
 class TestSendDigest(TestCase):
+    """Test case for `send_digest` task."""
+
     @patch(f"{module_path}.send_digest_email_notification")
     @patch(f"{module_path}.ForumNotificationDigest.objects.get")
     def test_send_digest_no_digest(
         self, mock_get_digest: Mock, send_digest_email_mock: Mock
     ):
+        """
+        Test `send_digest` task when digest does not exist.
+
+        Expected result:
+            - Raise `ForumNotificationDigest.DoesNotExist` exception.
+        """
         mock_get_digest.side_effect = ForumNotificationDigest.DoesNotExist
 
         with self.assertRaises(ForumNotificationDigest.DoesNotExist):
@@ -403,6 +486,13 @@ class TestSendDigest(TestCase):
         mock_get_course: Mock,
         mock_get_digest: Mock,
     ):
+        """
+        Test `send_digest` task.
+
+        Expected result:
+            - The digest is sent to the user.
+            - The digest is updated.
+        """
         digest_id = "test-digest-id"
         context = {}
         user_mock = Mock(id=1, email="test@user-email.com")
