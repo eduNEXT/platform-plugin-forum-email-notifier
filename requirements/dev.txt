@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-amqp==5.1.1
+amqp==5.2.0
     # via
     #   -r requirements/quality.txt
     #   kombu
@@ -12,7 +12,7 @@ asgiref==3.7.2
     # via
     #   -r requirements/quality.txt
     #   django
-astroid==2.15.8
+astroid==3.0.1
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -30,19 +30,19 @@ backports-zoneinfo[tzdata]==0.2.1
     #   kombu
 beautifulsoup4==4.12.2
     # via -r requirements/quality.txt
-billiard==4.1.0
+billiard==4.2.0
     # via
     #   -r requirements/quality.txt
     #   celery
-black==23.10.0
+black==23.11.0
     # via -r requirements/dev.in
 build==1.0.3
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-celery==5.3.4
+celery==5.3.6
     # via -r requirements/quality.txt
-certifi==2023.7.22
+certifi==2023.11.17
     # via
     #   -r requirements/quality.txt
     #   requests
@@ -52,7 +52,7 @@ cffi==1.16.0
     #   pynacl
 chardet==5.2.0
     # via diff-cover
-charset-normalizer==3.3.0
+charset-normalizer==3.3.2
     # via
     #   -r requirements/quality.txt
     #   requests
@@ -95,7 +95,9 @@ coverage[toml]==7.3.2
     #   -r requirements/quality.txt
     #   coverage
     #   pytest-cov
-diff-cover==8.0.0
+ddt==1.7.0
+    # via -r requirements/quality.txt
+diff-cover==8.0.1
     # via -r requirements/dev.in
 dill==0.3.7
     # via
@@ -105,7 +107,7 @@ distlib==0.3.7
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-django==3.2.22
+django==3.2.23
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/quality.txt
@@ -136,26 +138,26 @@ djangorestframework==3.14.0
     #   django-rest-framework
 edx-ace==1.7.0
     # via -r requirements/quality.txt
-edx-django-utils==5.7.0
+edx-django-utils==5.8.0
     # via -r requirements/quality.txt
 edx-i18n-tools==1.3.0
     # via -r requirements/dev.in
-edx-lint==5.3.4
+edx-lint==5.3.6
     # via -r requirements/quality.txt
 edx-opaque-keys[django]==2.5.1
     # via
     #   -r requirements/quality.txt
     #   edx-opaque-keys
     #   openedx-events
-exceptiongroup==1.1.3
+exceptiongroup==1.2.0
     # via
     #   -r requirements/quality.txt
     #   pytest
-fastavro==1.8.4
+fastavro==1.9.0
     # via
     #   -r requirements/quality.txt
     #   openedx-events
-filelock==3.12.4
+filelock==3.13.1
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -181,14 +183,10 @@ jinja2==3.1.2
     #   -r requirements/quality.txt
     #   code-annotations
     #   diff-cover
-kombu==5.3.2
+kombu==5.3.4
     # via
     #   -r requirements/quality.txt
     #   celery
-lazy-object-proxy==1.9.0
-    # via
-    #   -r requirements/quality.txt
-    #   astroid
 lxml==4.9.3
     # via edx-i18n-tools
 markupsafe==2.1.3
@@ -201,11 +199,11 @@ mccabe==0.7.0
     #   pylint
 mypy-extensions==1.0.0
     # via black
-newrelic==9.1.0
+newrelic==9.2.0
     # via
     #   -r requirements/quality.txt
     #   edx-django-utils
-openedx-events==9.0.0
+openedx-events==9.2.0
     # via -r requirements/quality.txt
 openedx-filters==1.6.0
     # via -r requirements/quality.txt
@@ -222,7 +220,7 @@ path==16.7.1
     # via edx-i18n-tools
 pathspec==0.11.2
     # via black
-pbr==5.11.1
+pbr==6.0.0
     # via
     #   -r requirements/quality.txt
     #   stevedore
@@ -230,6 +228,7 @@ pip-tools==7.3.0
     # via -r requirements/pip-tools.txt
 platformdirs==3.11.0
     # via
+    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
     #   black
@@ -244,7 +243,7 @@ pluggy==1.3.0
     #   tox
 polib==1.2.0
     # via edx-i18n-tools
-prompt-toolkit==3.0.39
+prompt-toolkit==3.0.41
     # via
     #   -r requirements/quality.txt
     #   click-repl
@@ -264,9 +263,9 @@ pycparser==2.21
     #   cffi
 pydocstyle==6.3.0
     # via -r requirements/quality.txt
-pygments==2.16.1
+pygments==2.17.2
     # via diff-cover
-pylint==2.17.7
+pylint==3.0.2
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -277,7 +276,7 @@ pylint-celery==0.3
     # via
     #   -r requirements/quality.txt
     #   edx-lint
-pylint-django==2.5.3
+pylint-django==2.5.5
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -298,14 +297,14 @@ pyproject-hooks==1.0.0
     # via
     #   -r requirements/pip-tools.txt
     #   build
-pytest==7.4.2
+pytest==7.4.3
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
     #   pytest-django
 pytest-cov==4.1.0
     # via -r requirements/quality.txt
-pytest-django==4.5.2
+pytest-django==4.7.0
     # via -r requirements/quality.txt
 python-dateutil==2.8.2
     # via
@@ -382,13 +381,12 @@ tomli==2.0.1
     #   pyproject-hooks
     #   pytest
     #   tox
-tomlkit==0.12.1
+tomlkit==0.12.3
     # via
     #   -r requirements/quality.txt
     #   pylint
 tox==3.28.0
     # via
-    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/ci.txt
     #   tox-battery
 tox-battery==0.6.2
@@ -409,34 +407,30 @@ tzdata==2023.3
     #   -r requirements/quality.txt
     #   backports-zoneinfo
     #   celery
-urllib3==2.0.6
+urllib3==2.1.0
     # via
     #   -r requirements/quality.txt
     #   requests
-vine==5.0.0
+vine==5.1.0
     # via
     #   -r requirements/quality.txt
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.24.5
+virtualenv==20.24.7
     # via
     #   -r requirements/ci.txt
     #   tox
-wcwidth==0.2.8
+wcwidth==0.2.12
     # via
     #   -r requirements/quality.txt
     #   prompt-toolkit
 web-fragments==2.1.0
     # via -r requirements/quality.txt
-wheel==0.41.2
+wheel==0.41.3
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-wrapt==1.15.0
-    # via
-    #   -r requirements/quality.txt
-    #   astroid
 zipp==3.17.0
     # via
     #   -r requirements/pip-tools.txt
