@@ -1,5 +1,5 @@
 """
-Tests for the FilesManagerXBlock
+Tests for the Forum Email Notifier plugin.
 """
 
 

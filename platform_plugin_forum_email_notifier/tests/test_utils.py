@@ -6,17 +6,17 @@ from ddt import data, ddt, unpack
 
 from platform_plugin_forum_email_notifier.utils import get_staff_subscribers, get_subscribers
 
-module_path = "platform_plugin_forum_email_notifier.utils"
+UTILS_MODULE_PATH = "platform_plugin_forum_email_notifier.utils"
 
 
 @ddt
 class TestUtils(TestCase):
     """Test suite for the Plugin Forum Email Notifier utils."""
 
-    settings_mock = patch(f"{module_path}.settings")
-    utils_mock = patch(f"{module_path}.comment_client_utils")
+    settings_mock = patch(f"{UTILS_MODULE_PATH}.settings")
+    utils_mock = patch(f"{UTILS_MODULE_PATH}.comment_client_utils")
     forum_preference_mock = patch(
-        f"{module_path}.ForumNotificationPreference.objects.filter"
+        f"{UTILS_MODULE_PATH}.ForumNotificationPreference.objects.filter"
     )
 
     @settings_mock

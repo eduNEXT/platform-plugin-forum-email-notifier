@@ -3,7 +3,7 @@ import json
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from ddt import data, ddt
+from ddt import data, ddt, unpack
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.test.utils import override_settings
@@ -23,19 +23,20 @@ from platform_plugin_forum_email_notifier.tasks import (
 from platform_plugin_forum_email_notifier.utils import ForumObject
 
 User = get_user_model()
-module_path = "platform_plugin_forum_email_notifier.tasks"
+TASKS_MODULE_PATH = "platform_plugin_forum_email_notifier.tasks"
 
 
+@ddt
 class TestSendEmailNotification(TestCase):
     """Unit test for `send_email_notification` task."""
 
-    get_mock = patch(f"{module_path}.User.objects.get")
+    get_mock = patch(f"{TASKS_MODULE_PATH}.User.objects.get")
     get_course_overview_or_none_mock = patch(
-        f"{module_path}.get_course_overview_or_none"
+        f"{TASKS_MODULE_PATH}.get_course_overview_or_none"
     )
-    get_user_preference_mock = patch(f"{module_path}.get_user_preference")
+    get_user_preference_mock = patch(f"{TASKS_MODULE_PATH}.get_user_preference")
     send_forum_email_notification_mock = patch(
-        f"{module_path}.send_forum_email_notification"
+        f"{TASKS_MODULE_PATH}.send_forum_email_notification"
     )
 
     def setUp(self) -> None:
@@ -69,10 +70,13 @@ class TestSendEmailNotification(TestCase):
         mock_get: Mock,
     ):
         """
-        Check `send_email_notification` when user exists.
+        Check `send_email_notification` behavior when user exists.
+
+        This test ensures that the function sends an email notification
+        as expected when the user exists.
 
         Expected result:
-            - Send an email notification when user exists.
+            - Send an email notification to the user.
         """
         mock_user = Mock(spec=User, id=1, email="test@user-email.com")
         mock_get.return_value = mock_user
@@ -82,7 +86,7 @@ class TestSendEmailNotification(TestCase):
         send_email_notification(**self.send_email_notification_args)
 
         mock_send_forum_email_notification.assert_called_once_with(
-            recipient=Recipient(1, "test@user-email.com"),
+            recipient=Recipient(mock_user.id, mock_user.email),
             language="en",
             user_context={
                 "user": mock_user,
@@ -103,10 +107,10 @@ class TestSendEmailNotification(TestCase):
     @get_mock
     def test_send_email_notification_user_does_not_exist(self, mock_get: Mock):
         """
-        Check `send_email_notification` when user does not exist.
+        Check `send_email_notification` behavior when user does not exist.
 
         Expected result:
-            - Raise `ObjectDoesNotExist` exception when user does not exist.
+            - Raise `ObjectDoesNotExist` exception.
         """
         mock_get.side_effect = ObjectDoesNotExist
 
@@ -119,10 +123,10 @@ class TestSendEmailNotification(TestCase):
         self, mock_get_course_overview_or_none: Mock, mock_get: Mock
     ):
         """
-        Check `send_email_notification` when course does not exist.
+        Check `send_email_notification` behavior when course does not exist.
 
         Expected result:
-            - Raise `Exception` exception when course does not exist.
+            - Raise `Exception` exception.
         """
         mock_get.return_value = Mock(spec=User, id=1, email="test@user-email.com")
         mock_get_course_overview_or_none.return_value = None
@@ -134,84 +138,49 @@ class TestSendEmailNotification(TestCase):
     @get_course_overview_or_none_mock
     @get_user_preference_mock
     @send_forum_email_notification_mock
-    def test_send_email_notification_post_has_title(
+    @data(
+        ("test-post-title", "test-discussion-id", "test-thread-id"),
+        (None, "test-discussion-id", "test-discussion-id"),
+    )
+    @unpack
+    def test_send_email_notification_post_title(
         self,
+        post_title: str,
+        discussion_id: str,
+        expected_post_id: str,
         mock_send_forum_email_notification: Mock,
         mock_get_user_preference: Mock,
         mock_get_course_overview_or_none: Mock,
         mock_get: Mock,
     ):
         """
-        Check `send_email_notification` when post has title.
+        Check `send_email_notification` behavior when post has title.
 
         Expected result:
             - The title of the post is used in the email notification.
+            - The notification is sent to the user.
         """
         mock_user = Mock(spec=User, id=1, email="test@user-email.com")
         mock_get.return_value = mock_user
         mock_get_course_overview_or_none.return_value = Mock()
         mock_get_user_preference.return_value = "en"
+        self.send_email_notification_args["title"] = post_title
+        self.send_email_notification_args["discussion"] = {"id": discussion_id}
 
         send_email_notification(**self.send_email_notification_args)
 
         mock_send_forum_email_notification.assert_called_once_with(
-            recipient=Recipient(1, "test@user-email.com"),
+            recipient=Recipient(mock_user.id, mock_user.email),
             language="en",
             user_context={
                 "user": mock_user,
                 "course_id": "test-course-id",
                 "course_name": mock_get_course_overview_or_none.return_value.display_name,
                 "thread_id": "test-thread-id",
-                "discussion": None,
+                "discussion": self.send_email_notification_args["discussion"],
                 "body": "test-body",
-                "title": "test-title",
-                "url": "test-url/discussions/test-course-id/posts/test-thread-id",
-                "author_id": 1,
-                "author_username": "test-author-username",
-                "author_email": "test@author-email.com",
-                "object_type": ForumObject.THREAD,
-            },
-        )
-
-    @get_mock
-    @get_course_overview_or_none_mock
-    @get_user_preference_mock
-    @send_forum_email_notification_mock
-    def test_send_email_notification_post_does_not_have_title(
-        self,
-        mock_send_forum_email_notification: Mock,
-        mock_get_user_preference: Mock,
-        mock_get_course_overview_or_none: Mock,
-        mock_get: Mock,
-    ):
-        """
-        Check `send_email_notification` when post does not have title.
-
-        Expected result:
-            - The title of the post is not used in the email notification.
-            - The id of the discussion is used instead.
-        """
-        mock_user = Mock(spec=User, id=1, email="test@user-email.com")
-        mock_get.return_value = mock_user
-        mock_get_course_overview_or_none.return_value = Mock()
-        mock_get_user_preference.return_value = "en"
-        self.send_email_notification_args["title"] = None
-        self.send_email_notification_args["discussion"] = {"id": "test-discussion-id"}
-
-        send_email_notification(**self.send_email_notification_args)
-
-        mock_send_forum_email_notification.assert_called_once_with(
-            recipient=Recipient(1, "test@user-email.com"),
-            language="en",
-            user_context={
-                "user": mock_user,
-                "course_id": "test-course-id",
-                "course_name": mock_get_course_overview_or_none.return_value.display_name,
-                "thread_id": "test-thread-id",
-                "discussion": {"id": "test-discussion-id"},
-                "body": "test-body",
-                "title": None,
-                "url": "test-url/discussions/test-course-id/posts/test-discussion-id",
+                "title": post_title,
+                "url": f"test-url/discussions/test-course-id/posts/{expected_post_id}",
                 "author_id": 1,
                 "author_username": "test-author-username",
                 "author_email": "test@author-email.com",
@@ -225,12 +194,16 @@ class TestNotifyUsers(TestCase):
     """
     Unit test for `notify_users` task."""
 
-    get_user_mock = patch(f"{module_path}.User.objects.get")
-    get_forum_mock = patch(f"{module_path}.ForumNotificationPreference.objects.get")
-    get_staff_subscribers_mock = patch(f"{module_path}.get_staff_subscribers")
-    get_subscribers_mock = patch(f"{module_path}.get_subscribers")
-    send_email_notification_mock = patch(f"{module_path}.send_email_notification.delay")
-    handle_digests_mock = patch(f"{module_path}.handle_digests.delay")
+    get_user_mock = patch(f"{TASKS_MODULE_PATH}.User.objects.get")
+    get_forum_mock = patch(
+        f"{TASKS_MODULE_PATH}.ForumNotificationPreference.objects.get"
+    )
+    get_staff_subscribers_mock = patch(f"{TASKS_MODULE_PATH}.get_staff_subscribers")
+    get_subscribers_mock = patch(f"{TASKS_MODULE_PATH}.get_subscribers")
+    send_email_notification_mock = patch(
+        f"{TASKS_MODULE_PATH}.send_email_notification.delay"
+    )
+    handle_digests_mock = patch(f"{TASKS_MODULE_PATH}.handle_digests.delay")
 
     @get_user_mock
     @get_forum_mock
@@ -248,7 +221,7 @@ class TestNotifyUsers(TestCase):
         mock_get_user: Mock,
     ):
         """
-        Check `notify_users` task for thread.
+        Check `notify_users` behavior for thread object type.
 
         Expected result:
             - Send an email notification to all subscribers.
@@ -262,25 +235,49 @@ class TestNotifyUsers(TestCase):
         )
 
         notify_users(
-            thread_id="test-thread_id",
+            thread_id="test-thread-id",
             discussion={},
-            course_id="test-course_id",
+            course_id="test-course-id",
             body="test-body",
             title="test-title",
             url="test-url/",
-            author_id="test-author_id",
-            author_username="test-author_username",
-            author_email="test@author_email.com",
+            author_id="test-author-id",
+            author_username="test-author-username",
+            author_email="test@author-email.com",
             object_type=ForumObject.THREAD,
             context={},
         )
 
-        mock_send_email_notification.assert_called()
-        mock_handle_digests.assert_called()
+        mock_send_email_notification.assert_called_with(
+            "test-thread-id",
+            {},
+            "test-course-id",
+            "test-body",
+            "test-title",
+            "test-url/",
+            "test-author-id",
+            "test-author-username",
+            "test@author-email.com",
+            ForumObject.THREAD,
+            2,
+            {},
+        )
+        mock_handle_digests.assert_called_with(
+            "test-thread-id",
+            {},
+            "test-course-id",
+            "test-body",
+            "test-title",
+            "test-url/",
+            "test-author-id",
+            "test-author-username",
+            "test@author-email.com",
+            ForumObject.THREAD,
+        )
 
     def test_notify_users_invalid_object_type(self):
         """
-        Check `notify_users` task for invalid object type.
+        Check `notify_users` behavior for invalid object type.
 
         Expected result:
             - Raise `ValueError` exception.
@@ -314,10 +311,11 @@ class TestNotifyUsers(TestCase):
         mock_get_user: Mock,
     ):
         """
-        Check `notify_users` task when user does not exist.
+        Check `notify_users` behavior when user does not exist.
 
         Expected result:
             - The `send_email_notification` task is not called.
+            - A digest is created for all staff subscribers.
         """
         mock_get_subscribers.return_value = set()
         mock_get_staff_subscribers.return_value = set([1])
@@ -362,12 +360,14 @@ class TestNotifyUsers(TestCase):
         mock_get_user: Mock,
     ):
         """
-        Check `notify_users` task for different user preference options.
-        when preference_option is NONE, ALL_POSTS_DAILY_DIGEST or ALL_POSTS_WEEKLY_DIGEST, the
-        user should not be notified.
+        Check `notify_users` behavior for different user preference options.
+
+        When preference_option is NONE, ALL_POSTS_DAILY_DIGEST or ALL_POSTS_WEEKLY_DIGEST,
+        the user should not be notified.
 
         Expected result:
             - The `send_email_notification` task is not called.
+            - A digest is created for all staff subscribers.
         """
         mock_get_subscribers.return_value = set([])
         mock_get_staff_subscribers.return_value = set([1])
@@ -412,15 +412,15 @@ class TestHandleDigests(TestCase):
             "object_type": ForumObject.THREAD,
         }
 
-    @patch(f"{module_path}.ForumNotificationPreference.objects.filter")
-    @patch(f"{module_path}.ForumNotificationDigest.objects.get_or_create")
+    @patch(f"{TASKS_MODULE_PATH}.ForumNotificationPreference.objects.filter")
+    @patch(f"{TASKS_MODULE_PATH}.ForumNotificationDigest.objects.get_or_create")
     def test_handle_digests(
         self,
         mock_get_or_create: Mock,
         mock_filter: Mock,
     ):
         """
-        Test `handle_digests` task.
+        Test `handle_digests` behavior when digest exists.
 
         Expected result:
             - A digest is created for each user with a digest preference.
@@ -441,7 +441,6 @@ class TestHandleDigests(TestCase):
             ),
             course_id=self.handle_digest_args["course_id"],
         )
-
         mock_get_or_create.assert_called_once_with(
             user=user_mock,
             course_id=self.handle_digest_args["course_id"],
@@ -454,15 +453,15 @@ class TestHandleDigests(TestCase):
 
 
 class TestSendDigest(TestCase):
-    """Test case for `send_digest` task."""
+    """Test cases for `send_digest` task."""
 
-    @patch(f"{module_path}.send_digest_email_notification")
-    @patch(f"{module_path}.ForumNotificationDigest.objects.get")
+    @patch(f"{TASKS_MODULE_PATH}.send_digest_email_notification")
+    @patch(f"{TASKS_MODULE_PATH}.ForumNotificationDigest.objects.get")
     def test_send_digest_no_digest(
         self, mock_get_digest: Mock, send_digest_email_mock: Mock
     ):
         """
-        Test `send_digest` task when digest does not exist.
+        Check `send_digest` behavior when digest does not exist.
 
         Expected result:
             - Raise `ForumNotificationDigest.DoesNotExist` exception.
@@ -475,10 +474,10 @@ class TestSendDigest(TestCase):
         send_digest_email_mock.assert_not_called()
 
     @override_settings(LMS_ROOT_URL="https://example.com")
-    @patch(f"{module_path}.ForumNotificationDigest.objects.get")
-    @patch(f"{module_path}.get_course_overview_or_none")
-    @patch(f"{module_path}.get_user_preference")
-    @patch(f"{module_path}.send_digest_email_notification")
+    @patch(f"{TASKS_MODULE_PATH}.ForumNotificationDigest.objects.get")
+    @patch(f"{TASKS_MODULE_PATH}.get_course_overview_or_none")
+    @patch(f"{TASKS_MODULE_PATH}.get_user_preference")
+    @patch(f"{TASKS_MODULE_PATH}.send_digest_email_notification")
     def test_send_digest(
         self,
         mock_send_digest_email: Mock,
@@ -487,7 +486,7 @@ class TestSendDigest(TestCase):
         mock_get_digest: Mock,
     ):
         """
-        Test `send_digest` task.
+        Check `send_digest` behavior when digest exists.
 
         Expected result:
             - The digest is sent to the user.
