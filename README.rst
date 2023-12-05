@@ -7,10 +7,24 @@ Forum Email Notifier
 Purpose
 *******
 
-This is a plugin for the Open edX platform that sends email notifications to
-users when there are forum updates.
+This plugin for the Open edX platform sends email notifications to users when there are forum updates. It also allows
+to configure notification digest frequency for the instructor:
 
-This plugin allows to configure notification digest frequency.
+.. image:: https://github.com/eduNEXT/platform-plugin-forum-email-notifier/assets/64440265/d4a3ad91-608f-48c7-b89c-1945cfb1955d
+   :alt: Instructor panel integration
+
+The following LMS configuration setting turns on this feature, which uses the openedx-filters (> v1.4.0) library:
+
+.. code-block::
+
+    OPEN_EDX_FILTERS_CONFIG = {
+      "org.openedx.learning.instructor.dashboard.render.started.v1": {
+          "fail_silently": False,
+          "pipeline": [
+            "platform_plugin_forum_email_notifier.extensions.filters.AddInstructorNotifierTab",
+          ]
+      },
+    }
 
 Getting Started
 ***************
@@ -74,7 +88,7 @@ The email digest feature accumulates the notifications in a database table
 per user, per course, and digest frequency. Then, a scheduled task is run to
 send the notifications to the users.
 
-As Open edX doesn't support celery beat for scheduled tasks, we need to use
+As Open edX doesn't support Celery Beat for scheduled tasks, we need to use
 another tool to run them.
 
 For tutor local installations we need to use `cron <https://en.wikipedia.org/wiki/Cron>` to run the scheduled tasks.
