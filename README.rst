@@ -84,6 +84,18 @@ Every time you develop something in this repo
 Deploying
 =========
 
+Tutor environments
+------------------
+
+To use this plugin in a Tutor environment, you must install it as a requirement of the ``openedx`` image. To achieve this, follow these steps:
+
+.. code-block:: bash
+
+    tutor config save --append OPENEDX_EXTRA_PIP_REQUIREMENTS=git+https://github.com/edunext/platform-plugin-forum-email-notifier@vX.Y.Z
+    tutor images build openedx
+
+Then, deploy the resultant image in your environment.
+
 The email digest feature accumulates the notifications in a database table
 per user, per course, and digest frequency. Then, a scheduled task is run to
 send the notifications to the users.
@@ -91,7 +103,7 @@ send the notifications to the users.
 As Open edX doesn't support Celery Beat for scheduled tasks, we need to use
 another tool to run them.
 
-For tutor local installations we need to use `cron <https://en.wikipedia.org/wiki/Cron>` to run the scheduled tasks.
+For Tutor local installations, we must use `cron <https://en.wikipedia.org/wiki/Cron>` to run the scheduled tasks.
 
 An example of a cron expression to run the scheduled tasks once every day at midnight:
 
