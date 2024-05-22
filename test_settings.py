@@ -60,3 +60,13 @@ TEMPLATES = [{
         ],
     },
 }]
+
+FORUM_NOTIFIER_LANG_PREF_BACKEND = (
+    "platform_plugin_forum_email_notifier.edxapp_wrapper.backends.tests.lang_pref_p_v1_test"
+)
+FORUM_NOTIFIER_COURSE_OVERVIEWS_BACKEND = (
+    "platform_plugin_forum_email_notifier.edxapp_wrapper.backends.tests.course_overviews_p_v1_test"
+)
+FORUM_NOTIFIER_USER_API_BACKEND = (
+    "platform_plugin_forum_email_notifier.edxapp_wrapper.backends.tests.user_api_p_v1_test"
+)
