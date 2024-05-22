@@ -8,14 +8,52 @@ Purpose
 *******
 
 This plugin for the Open edX platform sends email notifications to users when there are forum updates. It also allows
-to configure notification digest frequency for the instructor:
+to configure notification digest frequency for the instructor.
+
+Compatibility Notes
+===================
+
++------------------+--------------+
+| Open edX Release | Version      |
++==================+==============+
+| Palm             | >= 0.3.0     |
++------------------+--------------+
+| Quince           | >= 0.3.0     |
++------------------+--------------+
+| Redwood          | >= 0.3.0     |
++------------------+--------------+
+
+The settings can be changed in ``platform_plugin_forum_email_notifier/settings/common.py``
+or, for example, in tutor configurations.
+
+**NOTE**: the current ``common.py`` works with Open edX Palm, Quince and Redwood
+version.
+
+Dependencies
+************
+
+This plugin depends on the `following commit`_, which emits the forum events.
+Depending on the version of Open edX you are using, it is necessary to make a
+backport.
+
+These changes are available from **Redwood** release.
+
+.. _`following commit`: https://github.com/eduNEXT/edx-platform/commit/9e6502474482b8c5310ac069bd58f813fa3be73c
+
+View from the Learning Management System (LMS)
+**********************************************
 
 .. image:: https://github.com/eduNEXT/platform-plugin-forum-email-notifier/assets/64440265/d4a3ad91-608f-48c7-b89c-1945cfb1955d
    :alt: Instructor panel integration
 
-The following LMS configuration setting turns on this feature, which uses the openedx-filters (> v1.4.0) library:
 
-.. code-block::
+Configuring required in the Open edX platform
+*********************************************
+
+You must include the following setting in the LMS to enable the filter that will
+display add the new tab for On Task:
+
+.. code-block:: python
 
     OPEN_EDX_FILTERS_CONFIG = {
       "org.openedx.learning.instructor.dashboard.render.started.v1": {
@@ -103,7 +141,7 @@ send the notifications to the users.
 As Open edX doesn't support Celery Beat for scheduled tasks, we need to use
 another tool to run them.
 
-For Tutor local installations, we must use `cron <https://en.wikipedia.org/wiki/Cron>` to run the scheduled tasks.
+For Tutor local installations, we must use `cron <https://en.wikipedia.org/wiki/Cron>`_ to run the scheduled tasks.
 
 An example of a cron expression to run the scheduled tasks once every day at midnight:
 
