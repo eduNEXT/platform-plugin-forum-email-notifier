@@ -5,6 +5,7 @@ https://docs.djangoproject.com/en/2.22/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.22/ref/settings/
 """
+
 from os.path import abspath, dirname, join
 
 from platform_plugin_forum_email_notifier import ROOT_DIRECTORY
@@ -75,3 +76,12 @@ def plugin_settings(settings):
     """
     settings.MAKO_TEMPLATE_DIRS_BASE.append(ROOT_DIRECTORY / "templates")
     settings.FORUM_NOTIFIER_URL = "api/forum_email_notification_preference"
+    settings.FORUM_NOTIFIER_COURSE_OVERVIEWS_BACKEND = (
+        "platform_plugin_forum_email_notifier.edxapp_wrapper.backends.course_overviews_p_v1"
+    )
+    settings.FORUM_NOTIFIER_LANG_PREF_BACKEND = (
+        "platform_plugin_forum_email_notifier.edxapp_wrapper.backends.lang_pref_p_v1"
+    )
+    settings.FORUM_NOTIFIER_USER_API_BACKEND = (
+        "platform_plugin_forum_email_notifier.edxapp_wrapper.backends.user_api_p_v1"
+    )
