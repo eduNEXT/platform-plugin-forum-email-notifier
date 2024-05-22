@@ -9,11 +9,6 @@ try:
 except ImportError:
     COURSE_ID_PATTERN = object
 
-try:
-    from openedx.core.constants import COURSE_ID_PATTERN
-except ImportError:
-    COURSE_ID_PATTERN = object
-
 
 class PlatformPluginForumEmailNotifierConfig(AppConfig):
     """
